@@ -7,11 +7,14 @@ import YTFormat from 'youtube-duration-format';
 
 import SearchBar from './components/search_bar';
 import VideoList from './components/video_list';
+import PlayList from './components/playlist';
 
-const API_KEY = 'AIzaSyDKSHOjEWO3fWq5MWLrJmavVJd7MucgtuQ';
+const API_KEY = 'AIzaSyDZvmpSXn5K5EASg3ecaXP_WxvaC5uvcjs';
 const ROOT_URL = 'https://www.googleapis.com/youtube/v3/search';
 const ROOT_URL_VIDEOS = 'https://www.googleapis.com/youtube/v3/videos';
 const MAX_RESULTS = 10;
+
+const ROOT_API_URL = 'https://yt-music-api.herokuapp.com';
 
 
 class App extends Component {
@@ -19,13 +22,12 @@ class App extends Component {
         super(props);
 
         this.state = {
-            videos: []
+            videos: [],
+            playlist: []
         };
-
-
     }
 
-
+    //Video searching function
     videoSearch(term) {
         var params = {
             part: 'snippet',
@@ -35,7 +37,7 @@ class App extends Component {
             maxResults: MAX_RESULTS
         };
 
-
+        //Searches for the videos with the Youtube API
         axios.get(ROOT_URL, {params: params})
             .then((response) => {
                 var videosArray = [];
@@ -74,7 +76,7 @@ class App extends Component {
                 axios.get(ROOT_URL_VIDEOS, {params: videoParams})
                     .then((response) => {
 
-                        for(var i = 0; i < videosArray.length; i++){
+                        for (var i = 0; i < videosArray.length; i++) {
                             videosArray[i].duration = YTFormat(response.data.items[i].contentDetails.duration);
                         }
                         //console.log(videosArray);
@@ -84,31 +86,60 @@ class App extends Component {
 
                     });
 
-
             })
             .catch((error) => {
                 console.error(error);
             });
 
 
-
-
-
-
-
     }
+
+    getPlayListItems() {
+
+        axios.get(`${ROOT_API_URL}/songs`)
+            .then((response) => {
+                response.data.songs.map((song) => {
+                    console.log(song);
+                });
+
+
+                //console.log(response.data.songs);
+            })
+            .catch((e) => {
+                return console.log(e);
+            });
+
+    };
+
+    componentWillMount(){
+      this.getPlayListItems();
+    };
+
 
     render() {
         const videoSearch = _.debounce((term) => {
             this.videoSearch(term);
         }, 300);
 
+
+        //For testing purposes only
+        //videoSearch('Muse');
+
         return (
             <div className="app-wrapper">
                 <SearchBar onSearchTermChange={videoSearch}/>
-                <VideoList
-                    videos={this.state.videos}
-                />
+                <div className="content-wrapper">
+                    <PlayList
+                        playlist={this.state.playlist}
+                    />
+                    <VideoList
+                        videos={this.state.videos}
+                    />
+                    <div className="spacer">
+
+                    </div>
+                </div>
+
             </div>
         );
     }

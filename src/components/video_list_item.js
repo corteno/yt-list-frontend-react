@@ -12,14 +12,14 @@ const VideoListItem = ({video, onVideoSelect}) => {
                 <div className="video-title">
                     {video.title}
                 </div>
-                <div className="video-duration">
+                <div className="video-duration subtitle">
                     {video.duration}
                 </div>
             </div>
 
         </li>
     );
-}
+};
 
 
 export default VideoListItem;
