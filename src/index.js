@@ -9,7 +9,7 @@ import SearchBar from './components/search_bar';
 import VideoList from './components/video_list';
 import PlayList from './components/playlist';
 
-const API_KEY = 'AIzaSyDZvmpSXn5K5EASg3ecaXP_WxvaC5uvcjs';
+const API_KEY = 'AIzaSyDKSHOjEWO3fWq5MWLrJmavVJd7MucgtuQ';
 const ROOT_URL = 'https://www.googleapis.com/youtube/v3/search';
 const ROOT_URL_VIDEOS = 'https://www.googleapis.com/youtube/v3/videos';
 const MAX_RESULTS = 10;
@@ -25,6 +25,7 @@ class App extends Component {
             videos: [],
             playlist: []
         };
+
     }
 
     //Video searching function
@@ -45,15 +46,8 @@ class App extends Component {
 
                 //Search result
                 response.data.items.map((video) => {
-                    var videoDetails = {
-                        etag: '',
-                        id: '',
-                        title: '',
-                        duration: '',
-                        thumbnail: ''
-                    };
+                    var videoDetails = {};
 
-                    videoDetails.etag = video.etag;
                     videoDetails.title = video.snippet.title;
                     videoDetails.thumbnail = video.snippet.thumbnails.default.url;
                     videoDetails.id = video.id.videoId;
@@ -73,12 +67,14 @@ class App extends Component {
                     key: API_KEY,
                     id: IDs
                 };
+
                 axios.get(ROOT_URL_VIDEOS, {params: videoParams})
                     .then((response) => {
 
                         for (var i = 0; i < videosArray.length; i++) {
                             videosArray[i].duration = YTFormat(response.data.items[i].contentDetails.duration);
                         }
+
                         //console.log(videosArray);
                         this.setState({
                             videos: videosArray
@@ -95,24 +91,63 @@ class App extends Component {
     }
 
     getPlayListItems() {
-
         axios.get(`${ROOT_API_URL}/songs`)
             .then((response) => {
+                let songsArray = [];
                 response.data.songs.map((song) => {
-                    console.log(song);
+                    songsArray.push(song);
                 });
 
-
-                //console.log(response.data.songs);
+                this.setState({playlist: songsArray});
+                //console.log(this.state.playlist);
             })
             .catch((e) => {
                 return console.log(e);
             });
-
     };
 
-    componentWillMount(){
-      this.getPlayListItems();
+
+    //Use an arrow function if you need to use another function in the same scope
+    onVideoSelect = (video) => {
+        axios.post(`${ROOT_API_URL}/song`, video)
+            .then((response) => {
+                if (response.status !== 200) {
+                    return console.error(response.status);
+                }
+
+                //console.log('Success');
+                //Refresh playlist - Need for an arrow function
+                this.getPlayListItems();
+
+            })
+            .catch((e) => {
+                console.error(e);
+            });
+    };
+
+    //Deleting
+    onPlayListItemDelete = (playlistItem) => {
+
+        axios.delete(`${ROOT_API_URL}/song/${playlistItem._id}`)
+            .then((response) => {
+                if (response.status !== 200) {
+                    return console.error(response);
+                }
+
+                this.getPlayListItems();
+                //console.log(response);
+            })
+            .catch((e) => {
+                //console.error(e);
+            });
+
+
+        console.log('Should delete ' + playlistItem.id, playlistItem.title);
+    };
+
+    //Getting playlist items on startup
+    componentWillMount() {
+        this.getPlayListItems();
     };
 
 
@@ -131,8 +166,10 @@ class App extends Component {
                 <div className="content-wrapper">
                     <PlayList
                         playlist={this.state.playlist}
+                        onPlayListItemDelete={this.onPlayListItemDelete}
                     />
                     <VideoList
+                        onVideoSelect={this.onVideoSelect}
                         videos={this.state.videos}
                     />
                     <div className="spacer">

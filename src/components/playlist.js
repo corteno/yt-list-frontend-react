@@ -1,25 +1,24 @@
 import React, {Component} from 'react';
-import axios from 'axios';
+import PlayListItem from './playlist_item';
 
-const ROOT_URL = 'https://yt-music-api.herokuapp.com';
-
-class PlayList extends Component {
-    constructor(props) {
-        super(props);
-
-
-    }
-
-
-    render() {
-
+const PlayList = (props) => {
+    const playlistItems = props.playlist.map((plItem) => {
         return (
-            <ul className="playlist-wrapper">
-                <li>Song 1</li>
-                <li>Song 2</li>
-            </ul>
+            <PlayListItem
+                key={plItem._id}
+                playlistItem={plItem}
+                onPlayListItemDelete={props.onPlayListItemDelete}
+            />
         );
-    }
+    });
+
+
+    return (
+        <ul className="playlist-wrapper">
+            {playlistItems}
+        </ul>
+    );
+
 
 }
 
