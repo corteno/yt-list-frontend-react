@@ -142,7 +142,7 @@ class App extends Component {
             });
 
 
-        console.log('Should delete ' + playlistItem.id, playlistItem.title);
+        //console.log('Should delete ' + playlistItem.id, playlistItem.title);
     };
 
     //Getting playlist items on startup
