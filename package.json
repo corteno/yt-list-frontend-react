@@ -33,9 +33,11 @@
     "react-dom": "^0.14.3",
     "react-redux": "4.3.0",
     "react-router": "^2.0.1",
+    "react-youtube": "^7.4.0",
     "redux": "^3.0.4",
     "youtube-api-search": "0.0.5",
     "youtube-duration-format": "^0.2.0",
+    "youtube-player": "^5.0.0",
     "youtube-search": "^1.0.9"
   }
 }

@@ -8,11 +8,12 @@ import YTFormat from 'youtube-duration-format';
 import SearchBar from './components/search_bar';
 import VideoList from './components/video_list';
 import PlayList from './components/playlist';
+import YoutubePlayer from 'react-youtube';
 
 const API_KEY = 'AIzaSyDKSHOjEWO3fWq5MWLrJmavVJd7MucgtuQ';
 const ROOT_URL = 'https://www.googleapis.com/youtube/v3/search';
 const ROOT_URL_VIDEOS = 'https://www.googleapis.com/youtube/v3/videos';
-const MAX_RESULTS = 10;
+const MAX_RESULTS = 15;
 
 const ROOT_API_URL = 'https://yt-music-api.herokuapp.com';
 
@@ -23,7 +24,8 @@ class App extends Component {
 
         this.state = {
             videos: [],
-            playlist: []
+            playlist: [],
+            currentVideo: {}
         };
 
     }
@@ -99,12 +101,16 @@ class App extends Component {
                 });
 
                 this.setState({playlist: songsArray});
+                //Set the current video to the first one
+                this.setState({currentVideo: this.state.playlist[0]});
                 //console.log(this.state.playlist);
             })
             .catch((e) => {
                 return console.log(e);
             });
     };
+
+    
 
 
     //Use an arrow function if you need to use another function in the same scope
@@ -145,10 +151,17 @@ class App extends Component {
         //console.log('Should delete ' + playlistItem.id, playlistItem.title);
     };
 
+    playNextInList = () => {
+        this.onPlayListItemDelete(this.state.currentVideo);
+        console.log('Play next');
+    };
+    
     //Getting playlist items on startup
     componentWillMount() {
         this.getPlayListItems();
     };
+    
+    
 
 
     render() {
@@ -156,18 +169,29 @@ class App extends Component {
             this.videoSearch(term);
         }, 300);
 
-
-        //For testing purposes only
-        //videoSearch('Muse');
+        const opts = {
+            playerVars: { // https://developers.google.com/youtube/player_parameters
+                //Enable once done testing
+                autoplay: 1
+            }
+        };
 
         return (
             <div className="app-wrapper">
                 <SearchBar onSearchTermChange={videoSearch}/>
                 <div className="content-wrapper">
-                    <PlayList
-                        playlist={this.state.playlist}
-                        onPlayListItemDelete={this.onPlayListItemDelete}
-                    />
+                    <div className="side-wrapper">
+                        <YoutubePlayer
+                            videoId={this.state.currentVideo.id}
+                            opts={opts}
+                            className={'youtube-player'}
+                            onEnd={this.playNextInList}
+                        />
+                        <PlayList
+                            playlist={this.state.playlist}
+                            onPlayListItemDelete={this.onPlayListItemDelete}
+                        />
+                    </div>
                     <VideoList
                         onVideoSelect={this.onVideoSelect}
                         videos={this.state.videos}
