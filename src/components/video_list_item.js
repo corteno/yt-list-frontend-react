@@ -2,9 +2,9 @@ import React from 'react';
 
 const VideoListItem = ({video, onVideoSelect}) => {
     const imgURL = video.thumbnail;
-    
+
     return (
-        <li className="video-list-item" onClick={() => {onVideoSelect(video)}}>
+        <li className="video-list-item">
             <div className="video-thumbnail">
                 <img src={imgURL} alt=""/>
             </div>
@@ -15,6 +15,13 @@ const VideoListItem = ({video, onVideoSelect}) => {
                 <div className="video-duration subtitle">
                     {video.duration}
                 </div>
+            </div>
+            <div
+                className="video-add"
+                onClick={() => {
+                    onVideoSelect(video)
+                }}>
+                +
             </div>
 
         </li>
