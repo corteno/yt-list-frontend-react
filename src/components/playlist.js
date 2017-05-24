@@ -3,6 +3,7 @@ import PlayListItem from './playlist_item';
 
 const PlayList = (props) => {
     const playlistItems = props.playlist.map((plItem) => {
+
         return (
             <PlayListItem
                 key={plItem._id}
@@ -20,6 +21,6 @@ const PlayList = (props) => {
     );
 
 
-}
+};
 
 export default PlayList;

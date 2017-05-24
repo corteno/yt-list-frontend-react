@@ -7,7 +7,7 @@ import YTFormat from 'youtube-duration-format';
 import SearchBar from './search_bar';
 import VideoList from './video_list';
 import PlayList from './playlist';
-import YoutubePlayer from 'react-youtube';
+import YoutubePlayer from './youtube_player';
 
 const API_KEY = 'AIzaSyDKSHOjEWO3fWq5MWLrJmavVJd7MucgtuQ';
 const ROOT_URL = 'https://www.googleapis.com/youtube/v3/search';
@@ -167,12 +167,7 @@ class App extends Component {
             this.videoSearch(term);
         }, 300);
 
-        const opts = {
-            playerVars: { // https://developers.google.com/youtube/player_parameters
-                //Enable once done testing
-                //autoplay: 1
-            }
-        };
+
 
         return (
             <div className="app-wrapper">
@@ -181,10 +176,8 @@ class App extends Component {
                     <div className="spacer"></div>
                     <div className="playlist-container">
                         <YoutubePlayer
-                            videoId={this.state.currentVideo.id}
-                            opts={opts}
-                            className={'youtube-player'}
-                            onEnd={this.playNextInList}
+                            currentVideo={this.state.currentVideo}
+                            playNextInList={this.playNextInList}
                         />
                         <PlayList
                             playlist={this.state.playlist}

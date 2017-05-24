@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import youtubePlayer from 'youtube-player';
+import ReactYoutube from 'react-youtube';
 
 
 class YoutubePlayer extends Component {
@@ -9,28 +9,29 @@ class YoutubePlayer extends Component {
 
 
     render() {
-        function ytPlayer() {
-            let ytPlayer = youtubePlayer('video-player');
-             ytPlayer.loadVideoById('f4kqIruQcvQ');
-             ytPlayer.playVideo();
+        const opts = {
+            playerVars: { // https://developers.google.com/youtube/player_parameters
+                //Enable once done testing
+                autoplay: 1
+            }
+        };
 
-             console.log(ytPlayer);
-             ytPlayer
-             .stopVideo()
-             .then(() => {
-    
-             });
-            console.log('asd');
-
-
+        let currentVideoId;
+        if(!this.props.currentVideo){
+            currentVideoId = 'eVtNcCwMY58';
+        } else {
+            currentVideoId = this.props.currentVideo.id;
         }
 
 
         return (
-            <div className="youtube-player">
-                <div id="video-player"></div>
-                {ytPlayer()}
-            </div>
+            <ReactYoutube
+                videoId={currentVideoId}
+                opts={opts}
+                className={'youtube-player'}
+                onEnd={this.props.playNextInList}
+            />
+
         );
     }
 }
