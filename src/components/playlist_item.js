@@ -3,7 +3,7 @@ import React from 'react';
 const PlayListItem = ({playlistItem, onPlayListItemDelete}) => {
 
     return (
-        <li className="video-list-item">
+        <li className="list-item">
             <div className="video-thumbnail">
                 <img src={playlistItem.thumbnail} alt=""/>
             </div>

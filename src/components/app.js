@@ -110,8 +110,6 @@ class App extends Component {
     };
 
 
-
-
     //Use an arrow function if you need to use another function in the same scope
     onVideoSelect = (video) => {
         axios.post(`${ROOT_API_URL}/song`, video)
@@ -155,12 +153,13 @@ class App extends Component {
         console.log('Play next');
     };
 
+
+
+
     //Getting playlist items on startup
     componentWillMount() {
         this.getPlayListItems();
     };
-
-
 
 
     render() {
@@ -196,7 +195,6 @@ class App extends Component {
                         onVideoSelect={this.onVideoSelect}
                         videos={this.state.videos}
                     />
-
 
 
                 </div>
