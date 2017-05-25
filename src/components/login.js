@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import { browserHistory } from 'react-router';
+import {browserHistory} from 'react-router';
 
-
+import AuthService from '../utils/AuthService';
 
 const ROOT_API_URL = 'https://yt-music-api.herokuapp.com';
 
@@ -27,22 +27,19 @@ class Login extends Component {
         var userCredentials = {
             username: this.state.user.username,
             password: this.state.user.password
-        }
+        };
 
-        axios.post(`${ROOT_API_URL}/login`, userCredentials)
+        AuthService.login(userCredentials)
             .then((response) => {
-                browserHistory.push('/rooms');
-            })
-            .catch((error) => {
+                //No need to push it only to refresh the page upon login which is done in the AuthService.login function
+                //browserHistory.push('/rooms');
+            }, (err) => {
                 this.resetForm();
                 this.setState({
                     statusMessage: 'Wrong username or password!'
                 });
-
-                console.log(error);
             });
 
-        console.log('login');
     };
 
     onRegister = (e) => {
@@ -54,7 +51,7 @@ class Login extends Component {
             password: this.state.user.password,
             email: this.state.user.email
         };
-        
+
         console.log(userToRegister);
 
         axios.post(`${ROOT_API_URL}/user`, userToRegister)
@@ -79,11 +76,13 @@ class Login extends Component {
 
     //Reseting the form
     resetForm = () => {
-        this.setState({user: {
-            username: '',
-            password: '',
-            email: ''
-        }});
+        this.setState({
+            user: {
+                username: '',
+                password: '',
+                email: ''
+            }
+        });
     };
 
     changeForm = () => {
@@ -100,21 +99,19 @@ class Login extends Component {
     onInputChange = (e) => {
         var currentUserState = this.state.user;
 
-        if(e.target.name === 'username'){
-           currentUserState.username = e.target.value;
+        if (e.target.name === 'username') {
+            currentUserState.username = e.target.value;
 
-        } else if(e.target.name === 'password'){
+        } else if (e.target.name === 'password') {
             currentUserState.password = e.target.value
 
-        } else if(e.target.name === 'email'){
+        } else if (e.target.name === 'email') {
             currentUserState.email = e.target.value;
         }
 
         this.setState({user: currentUserState});
         //console.log(this.state.user);
     };
-
-
 
 
     render() {
@@ -132,7 +129,7 @@ class Login extends Component {
                 <input
                     type="submit"
                     value="Login"
-                    className="login-submit"
+                    className="form-submit"
                 />
             );
             registerOrLogin = (
@@ -165,7 +162,7 @@ class Login extends Component {
                 <input
                     type="submit"
                     value="Register"
-                    className="login-submit"
+                    className="form-submit"
                 />
             );
 
@@ -184,7 +181,7 @@ class Login extends Component {
             <div className="login-bg">
                 <div className="login-wrapper">
 
-                    <form className="login-form" onSubmit={submit} >
+                    <form className="login-form" onSubmit={submit}>
                         <h1>{title}</h1>
                         <div className="input-wrapper">
                             <input
@@ -221,9 +218,7 @@ class Login extends Component {
                         {/*<div>
                          <IndexLink to="/music"> Music</IndexLink>
                          </div>*/}
-                         <div className="status-message">
-                             {this.state.statusMessage}
-                         </div>
+
                     </form>
                 </div>
             </div>

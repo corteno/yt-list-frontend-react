@@ -41,6 +41,11 @@ li {
     flex-direction: column;
 }
 
+.not-found-text{
+    width: 100%;
+    text-align: center;
+}
+
 /*
 ================================
             HEADER
@@ -69,11 +74,25 @@ li {
     font-weight: 500;
 }
 
+.user-details{
+    height: 100%;
+    margin-left: auto;
+    padding: 0 10px;
+
+    cursor: pointer;
+
+    align-items: center;
+}
+
+.user-details:hover{
+    background: #424242;
+}
+
 .header-create-room{
     height: 100%;
     width: 70px;
 
-    margin-left: auto;
+    /*margin-left: auto;*/
 
     font-size: 36px;
     font-family: RobotoLight;
@@ -96,11 +115,66 @@ li {
 
 /*
 ================================
+            PROMPT
+================================
+*/
+
+.prompt-wrapper{
+    position: absolute;
+    top:0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0, 0, 0, 0.1);
+
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.prompt-background{
+    position: absolute;
+    top:0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.prompt-window{
+    z-index: 100;
+    height: auto;
+    padding: 30px !important;
+}
+
+.radio-wrapper{
+
+}
+
+.radio-wrapper label{
+    position: relative !important;
+    top: 0 !important;
+}
+
+
+/*
+================================
+          PROMPT END
+================================
+*/
+
+/*
+================================
             ROOMS
 ================================
 */
 
 .rooms-wrapper{
+    position: relative;
     width: 100%;
     flex-direction: column;
 }
@@ -462,7 +536,7 @@ li {
     font-size: 16px;
 }
 
-.login-submit{
+.form-submit{
     margin-top: 10px;
 }
 

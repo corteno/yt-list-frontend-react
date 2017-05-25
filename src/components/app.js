@@ -12,7 +12,7 @@ import YoutubePlayer from './youtube_player';
 const API_KEY = 'AIzaSyDKSHOjEWO3fWq5MWLrJmavVJd7MucgtuQ';
 const ROOT_URL = 'https://www.googleapis.com/youtube/v3/search';
 const ROOT_URL_VIDEOS = 'https://www.googleapis.com/youtube/v3/videos';
-const MAX_RESULTS = 15;
+const MAX_RESULTS = 20;
 
 const ROOT_API_URL = 'https://yt-music-api.herokuapp.com';
 
