@@ -154,8 +154,6 @@ class App extends Component {
     };
 
 
-
-
     //Getting playlist items on startup
     componentWillMount() {
         this.getPlayListItems();
@@ -166,8 +164,6 @@ class App extends Component {
         const videoSearch = _.debounce((term) => {
             this.videoSearch(term);
         }, 300);
-
-
 
         return (
             <div className="app-wrapper">
@@ -188,8 +184,6 @@ class App extends Component {
                         onVideoSelect={this.onVideoSelect}
                         videos={this.state.videos}
                     />
-
-
                 </div>
 
             </div>

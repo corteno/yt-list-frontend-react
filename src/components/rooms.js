@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import Prompt from './prompt';
-
+import AuthService from '../utils/AuthService';
 
 import Header from './header';
 import RoomList from './room_list';
 
+const ROOT_API_URL = 'https://yt-music-api.herokuapp.com';
 
 
 class Rooms extends Component {
@@ -13,7 +14,8 @@ class Rooms extends Component {
         super(props);
 
         this.state = {
-            createRoom: false
+            createRoom: false,
+            rooms: []
         };
     }
 
@@ -25,12 +27,75 @@ class Rooms extends Component {
         this.setState({createRoom: false});
     };
 
+    onPromptSubmit = (data) => {
+        let roomData = {
+            name: data.roomDetails.roomName,
+            password: data.roomDetails.password,
+            owner: AuthService.getUserDetails(),
+            isPublic: !data.privateRoom
+        };
+
+        axios.post(`${ROOT_API_URL}/room`, roomData)
+            .then((response) => {
+                this.updateRoomsState(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+
+        //console.log(roomData);
+    };
+
+    updateRoomsState = (data) => {
+        let currentRoomState = this.state.rooms;
+        currentRoomState.push(data);
+        this.setState({rooms: currentRoomState});
+
+        /*let roomsArray = [];
+        roomsArray.push(room);
+        this.setState({rooms: roomsArray});
+        console.log("Update rooms state: ", this.state.rooms);*/
+
+    };
+
+    getRooms = () => {
+        axios.get(`${ROOT_API_URL}/rooms`)
+            .then((response) => {
+
+                let roomsArray = [];
+                response.data.rooms.map((room) => {
+                    roomsArray.push(room);
+                });
+                
+                console.log("get rooms:", roomsArray);
+                this.setState({rooms: roomsArray});
+
+
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+    };
+
+    componentWillMount(){
+        //Changing the title of the page
+        document.title = "Rooms - Youtube Playlist";
+    }
+
+    componentDidMount() {
+
+        this.getRooms();
+    }
+
     render() {
         let prompt;
-        if(this.state.createRoom){
+        if (this.state.createRoom) {
             prompt = (
                 <Prompt
                     onPromptClose={this.onPromptClose}
+                    onPromptSubmit={this.onPromptSubmit}
                 />
             );
         } else {
@@ -45,7 +110,9 @@ class Rooms extends Component {
                     onCreateRoom={this.onCreateRoom}
                 />
                 <div className="rooms-content-wrapper">
-                    <RoomList/>
+                    <RoomList
+                        rooms={this.state.rooms}
+                    />
                 </div>
 
             </div>
