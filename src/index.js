@@ -13,25 +13,24 @@ let routes;
 
 //console.log(AuthService.isLoggedIn());
 
-if(AuthService.isLoggedIn()){
+if (AuthService.isLoggedIn()) {
     routes = (
-        <Route path="/" >
+        <Route path="/">
             <IndexRoute component={Rooms}/>
-            <Route path="music" component={App}/>
-            <Route path="rooms" component={Rooms}/>
-            <Route path="*" component={NotFound}/>
+            <Route path="/music" component={App}/>
+            <Route path="/rooms" component={Rooms}/>
+            <Route path="/room/:roomId" component={App}/>
 
             {/*Only for testing*/}
-            <Route path="login" component={Login}/>
+            <Route path="/login" component={Login}/>
             {/*Only for testing*/}
-
-
+            <Route path="/*" component={NotFound}/>
 
         </Route>
     );
 } else {
     routes = (
-        <Route path="/" >
+        <Route path="/">
             <IndexRoute component={Login}/>
             <Route path="*" component={NotFound}/>
         </Route>

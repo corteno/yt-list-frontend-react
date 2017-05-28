@@ -271,7 +271,31 @@ li {
 }
 
 .room-name{
+    font-family: RobotoRegular;
+    font-size: 18px;
+}
 
+.room-owner{
+    font-family: RobotoLight;
+    color: #757575;
+    font-size: 14px;
+}
+
+.room-private{
+    height: 70px;
+    width: 70px;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    margin-left: auto;
+
+}
+
+.private-lock{
+    width: 20px;
+    height: 20px;
+    background: url("../img/lock_icon.svg") no-repeat center center;
+    background-size: contain;
 }
 
 

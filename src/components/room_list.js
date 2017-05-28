@@ -6,9 +6,11 @@ const RoomList = (props) => {
         return (
             <RoomListItem
                 key={roomItem._id}
+                id={roomItem.id}
                 roomName={roomItem.name}
                 owner={roomItem.owner}
                 isPublic={roomItem.isPublic}
+                onRoomClick={props.onRoomClick}
             />
         );
     });

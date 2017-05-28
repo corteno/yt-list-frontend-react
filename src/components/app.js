@@ -28,6 +28,8 @@ class App extends Component {
         };
 
     }
+    
+
 
     //Video searching function
     videoSearch(term) {
@@ -157,6 +159,7 @@ class App extends Component {
     //Getting playlist items on startup
     componentWillMount() {
         this.getPlayListItems();
+        console.log(this.props.id);
     };
 
 

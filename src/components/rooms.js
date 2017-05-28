@@ -2,9 +2,11 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import Prompt from './prompt';
 import AuthService from '../utils/AuthService';
+import shortid from 'shortid';
 
 import Header from './header';
 import RoomList from './room_list';
+
 
 const ROOT_API_URL = 'https://yt-music-api.herokuapp.com';
 
@@ -32,7 +34,8 @@ class Rooms extends Component {
             name: data.roomDetails.roomName,
             password: data.roomDetails.password,
             owner: AuthService.getUserDetails(),
-            isPublic: !data.privateRoom
+            isPublic: !data.privateRoom,
+            id: shortid.generate()
         };
 
         axios.post(`${ROOT_API_URL}/room`, roomData)
@@ -68,7 +71,7 @@ class Rooms extends Component {
                     roomsArray.push(room);
                 });
                 
-                console.log("get rooms:", roomsArray);
+                //console.log("get rooms:", roomsArray);
                 this.setState({rooms: roomsArray});
 
 
@@ -78,6 +81,11 @@ class Rooms extends Component {
             });
 
     };
+
+    onRoomClick = (id) => {
+        console.log(`Clicked on room ${id}`);
+    };
+
 
     componentWillMount(){
         //Changing the title of the page
@@ -112,6 +120,7 @@ class Rooms extends Component {
                 <div className="rooms-content-wrapper">
                     <RoomList
                         rooms={this.state.rooms}
+                        onRoomClick={this.onRoomClick}
                     />
                 </div>
 
