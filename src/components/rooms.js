@@ -3,6 +3,7 @@ import axios from 'axios';
 import Prompt from './prompt';
 import AuthService from '../utils/AuthService';
 import shortid from 'shortid';
+import {browserHistory} from 'react-router';
 
 import Header from './header';
 import RoomList from './room_list';
@@ -73,8 +74,6 @@ class Rooms extends Component {
                 
                 //console.log("get rooms:", roomsArray);
                 this.setState({rooms: roomsArray});
-
-
             })
             .catch((error) => {
                 console.log(error);
@@ -83,6 +82,7 @@ class Rooms extends Component {
     };
 
     onRoomClick = (id) => {
+        browserHistory.push(`/room/${id}`);
         console.log(`Clicked on room ${id}`);
     };
 

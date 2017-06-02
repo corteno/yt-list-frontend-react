@@ -8,6 +8,7 @@ import SearchBar from './search_bar';
 import VideoList from './video_list';
 import PlayList from './playlist';
 import YoutubePlayer from './youtube_player';
+import Header from './header';
 
 const API_KEY = 'AIzaSyDKSHOjEWO3fWq5MWLrJmavVJd7MucgtuQ';
 const ROOT_URL = 'https://www.googleapis.com/youtube/v3/search';
@@ -24,11 +25,11 @@ class App extends Component {
         this.state = {
             videos: [],
             playlist: [],
-            currentVideo: {}
+            currentVideo: {},
+            roomDetails: {}
         };
 
     }
-    
 
 
     //Video searching function
@@ -94,7 +95,7 @@ class App extends Component {
     }
 
     getPlayListItems() {
-        axios.get(`${ROOT_API_URL}/songs`)
+        axios.get(`${ROOT_API_URL}/songs/${this.props.params.roomId}`)
             .then((response) => {
                 let songsArray = [];
                 response.data.songs.map((song) => {
@@ -111,9 +112,20 @@ class App extends Component {
             });
     };
 
+    getRoomDetails() {
+        axios.get(`${ROOT_API_URL}/room/${this.props.params.roomId}`)
+            .then((res) => {
+                this.setState({roomDetails: res.data[0]});
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+    };
+
 
     //Use an arrow function if you need to use another function in the same scope
     onVideoSelect = (video) => {
+        video.roomId = this.props.params.roomId;
         axios.post(`${ROOT_API_URL}/song`, video)
             .then((response) => {
                 if (response.status !== 200) {
@@ -132,8 +144,8 @@ class App extends Component {
 
     //Deleting
     onPlayListItemDelete = (playlistItem) => {
-
-        axios.delete(`${ROOT_API_URL}/song/${playlistItem._id}`)
+        console.log();
+        axios.delete(`${ROOT_API_URL}/song/${this.props.params.roomId}/${playlistItem._id}`)
             .then((response) => {
                 if (response.status !== 200) {
                     return console.error(response);
@@ -143,7 +155,7 @@ class App extends Component {
                 //console.log(response);
             })
             .catch((e) => {
-                //console.error(e);
+                console.error(e);
             });
 
 
@@ -159,7 +171,7 @@ class App extends Component {
     //Getting playlist items on startup
     componentWillMount() {
         this.getPlayListItems();
-        console.log(this.props.id);
+        this.getRoomDetails();
     };
 
 
@@ -170,7 +182,13 @@ class App extends Component {
 
         return (
             <div className="app-wrapper">
-                <SearchBar onSearchTermChange={videoSearch}/>
+                <Header
+                    roomDetails={this.state.roomDetails}
+                    location={'app'}
+                >
+                    <SearchBar onSearchTermChange={videoSearch}/>
+                </Header>
+
                 <div className="content-wrapper">
                     <div className="spacer"></div>
                     <div className="playlist-container">
@@ -183,10 +201,13 @@ class App extends Component {
                             onPlayListItemDelete={this.onPlayListItemDelete}
                         />
                     </div>
+
                     <VideoList
                         onVideoSelect={this.onVideoSelect}
                         videos={this.state.videos}
                     />
+
+
                 </div>
 
             </div>

@@ -29,6 +29,10 @@ li {
     list-style: none;
 }
 
+p{
+    margin: 0;
+}
+
 .container {
     width: 100%;
     height: 100%;
@@ -54,9 +58,10 @@ li {
 
 .header{
     display: flex;
+    position: relative;
 
     width: 100%;
-    height: 70px;
+    min-height: 70px;
     background: #262626;
     color: #BDBDBD;
 
@@ -67,15 +72,26 @@ li {
     padding: 0 20px;
 }
 
+.header-wrapper{
+    position: relative;
+    width: 100%;
+    height: 70px;
+}
+
 .header-title{
+    display: flex;
     margin: 0;
+    max-width: calc(30vw - 20px);
+    width: 100%;
+    align-items: center;
+    font-size: 28px;
 
     font-family: RobotoRegular;
     font-weight: 500;
 }
 
 .user-details{
-    height: 100%;
+    min-height: 100%;
     margin-left: auto;
     padding: 0 10px;
 
@@ -299,6 +315,10 @@ li {
 }
 
 
+
+
+
+
 /*
 ================================
           ROOMS END
@@ -307,6 +327,8 @@ li {
 
 
 .search-bar {
+   /* padding: 0 10px;*/
+    max-width: calc(40vw);
     width: 100%;
     height: 70px;
     justify-content: center;
@@ -314,13 +336,12 @@ li {
     align-items: center;
 
 
-    background: #424242;
+    /*background: #262626;*/
 }
 
 .search-input {
     position: relative;
-    max-width: 30vw;
-    min-width: 500px;
+
     width: 100%;
     height: 40px;
     border-radius: 2px;
@@ -347,7 +368,8 @@ li {
 }
 
 .playlist-container{
-    max-width: 30vw;
+    max-width: 40vw;
+    min-width: 40vw;
     width: 100%;
     flex-direction: column;
     /*margin: 0 auto;*/
@@ -369,7 +391,7 @@ li {
 }
 
 .playlist-wrapper {
-    max-width: 30vw;
+    /*max-width: 30vw;*/
     width: 100%;
 
     height: calc(100vh - 320px);
@@ -380,6 +402,32 @@ li {
     margin-bottom: 0;
 
     overflow-y: auto;
+}
+
+.no-items-wrapper{
+    color: #757575;
+    flex-direction: column;
+    padding: 0 10px;
+}
+
+.no-items-title{
+    text-align: center;
+    font-family: RobotoLight;
+    font-size: 24px;
+    line-height: 28px;
+    margin-bottom: 0;
+}
+
+.no-items-subtitle{
+    text-align: center;
+    font-family: RobotoLight;
+    font-size: 18px;
+    line-height: 24px;
+    margin-bottom: 10px;
+}
+
+.no-items-text{
+    text-align: center;
 }
 
 
@@ -416,11 +464,11 @@ li {
     border-bottom-color: #F44336;
 }
 
+
+
 .video-list, .room-list {
     height: calc(100vh - 70px);
-
-    max-width: 30vw;
-    min-width: 500px;
+    min-width: 30vw;
     width: 100%;
 
     flex-direction: column;
@@ -716,22 +764,6 @@ input[type='submit']{
     color: #fff;
 }
 
-/*input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-textarea:-webkit-autofill,
-textarea:-webkit-autofill:hover
-textarea:-webkit-autofill:focus,
-select:-webkit-autofill,
-select:-webkit-autofill:hover,
-select:-webkit-autofill:focus {
-    background-color: transparent !important;
-    color: #9E9E9E !important;
-}
-
-input:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0px 1000px #9E9E9E inset;
-}*/
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
