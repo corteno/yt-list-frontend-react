@@ -376,7 +376,8 @@ p{
 }
 
 .playlist-container > span{
-    height: 250px;
+    max-height: 350px;
+    height: 100%;
 }
 
 /*.playlist-container iframe {
@@ -769,7 +770,7 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-    transition: background-color 5000s ease-in-out 0s;
+    transition: background-color 10000s ease-in-out 0s;
     -webkit-text-fill-color: #9E9E9E !important;
     color: #9E9E9E !important;
 }

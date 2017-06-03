@@ -12,7 +12,7 @@ class YoutubePlayer extends Component {
         const opts = {
             playerVars: { // https://developers.google.com/youtube/player_parameters
                 //Enable once done testing
-                autoplay: 1
+                //autoplay: 1
             }
         };
 

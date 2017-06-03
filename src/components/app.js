@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import _ from 'lodash';
 import axios from 'axios';
 import YTFormat from 'youtube-duration-format';
+import io from 'socket.io-client';
 
 
 import SearchBar from './search_bar';
@@ -15,7 +16,10 @@ const ROOT_URL = 'https://www.googleapis.com/youtube/v3/search';
 const ROOT_URL_VIDEOS = 'https://www.googleapis.com/youtube/v3/videos';
 const MAX_RESULTS = 20;
 
+
+//make it so it's localhost:3000 for local testing
 const ROOT_API_URL = 'https://yt-music-api.herokuapp.com';
+const socket = io();
 
 
 class App extends Component {
@@ -172,6 +176,11 @@ class App extends Component {
     componentWillMount() {
         this.getPlayListItems();
         this.getRoomDetails();
+
+    };
+
+    componentDidMount(){
+      socket.emit('room', {room: this.state.roomDetails});
     };
 
 

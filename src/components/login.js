@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import {browserHistory} from 'react-router';
+import io from 'socket.io-client';
 
 import AuthService from '../utils/AuthService';
 
 const ROOT_API_URL = 'https://yt-music-api.herokuapp.com';
-
+var socket = io();
 
 class Login extends Component {
     constructor(props) {
@@ -111,6 +112,10 @@ class Login extends Component {
 
         this.setState({user: currentUserState});
         //console.log(this.state.user);
+    };
+
+    componentWillMount(){
+        socket.emit();
     };
 
 
