@@ -6,7 +6,9 @@ import io from 'socket.io-client';
 import AuthService from '../utils/AuthService';
 
 const ROOT_API_URL = 'https://yt-music-api.herokuapp.com';
-var socket = io();
+var socket = io.connect(ROOT_API_URL);
+
+
 
 class Login extends Component {
     constructor(props) {
@@ -115,7 +117,9 @@ class Login extends Component {
     };
 
     componentWillMount(){
-        socket.emit();
+        socket.on('test', (data) => {
+            console.log(data);
+        });
     };
 
 
