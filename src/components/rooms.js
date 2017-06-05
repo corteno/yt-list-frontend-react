@@ -98,8 +98,15 @@ class Rooms extends Component {
     }
 
     componentDidMount() {
+        //Socket.io listener
         this.state.socket.on('rooms', (data) => {
             console.log(data);
+
+            if(data.refresh){
+                this.getRooms();
+            }
+
+
         });
         this.getRooms();
     }
