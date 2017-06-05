@@ -18,7 +18,7 @@ const MAX_RESULTS = 20;
 
 
 //make it so it's localhost:3000 for local testing
-const ROOT_API_URL = 'https://yt-music-api.herokuapp.com';
+import RootApiUrl from '../utils/RootApiUrl';
 
 
 
@@ -99,7 +99,7 @@ class App extends Component {
     }
 
     getPlayListItems() {
-        axios.get(`${ROOT_API_URL}/songs/${this.props.params.roomId}`)
+        axios.get(`${RootApiUrl}/songs/${this.props.params.roomId}`)
             .then((response) => {
                 let songsArray = [];
                 response.data.songs.map((song) => {
@@ -117,7 +117,7 @@ class App extends Component {
     };
 
     getRoomDetails() {
-        axios.get(`${ROOT_API_URL}/room/${this.props.params.roomId}`)
+        axios.get(`${RootApiUrl}/room/${this.props.params.roomId}`)
             .then((res) => {
                 this.setState({roomDetails: res.data[0]});
             })
@@ -130,7 +130,7 @@ class App extends Component {
     //Use an arrow function if you need to use another function in the same scope
     onVideoSelect = (video) => {
         video.roomId = this.props.params.roomId;
-        axios.post(`${ROOT_API_URL}/song`, video)
+        axios.post(`${RootApiUrl}/song`, video)
             .then((response) => {
                 if (response.status !== 200) {
                     return console.error(response.status);
@@ -149,7 +149,7 @@ class App extends Component {
     //Deleting
     onPlayListItemDelete = (playlistItem) => {
         console.log();
-        axios.delete(`${ROOT_API_URL}/song/${this.props.params.roomId}/${playlistItem._id}`)
+        axios.delete(`${RootApiUrl}/song/${this.props.params.roomId}/${playlistItem._id}`)
             .then((response) => {
                 if (response.status !== 200) {
                     return console.error(response);

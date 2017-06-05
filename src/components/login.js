@@ -5,8 +5,8 @@ import io from 'socket.io-client';
 
 import AuthService from '../utils/AuthService';
 
-const ROOT_API_URL = 'https://yt-music-api.herokuapp.com';
-var socket = io.connect(ROOT_API_URL);
+import RootApiUrl from '../utils/RootApiUrl';
+var socket = io.connect(RootApiUrl);
 
 
 
@@ -57,7 +57,7 @@ class Login extends Component {
 
         console.log(userToRegister);
 
-        axios.post(`${ROOT_API_URL}/user`, userToRegister)
+        axios.post(`${RootApiUrl}/user`, userToRegister)
             .then((response) => {
                 this.resetForm();
 

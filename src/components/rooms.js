@@ -11,16 +11,17 @@ import RoomList from './room_list';
 
 const ROOT_API_URL = 'https://yt-music-api.herokuapp.com';
 
-
 class Rooms extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             createRoom: false,
-            rooms: []
+            rooms: [],
+            socket: this.props.route.socket
         };
     }
+
 
     onCreateRoom = () => {
         this.setState({createRoom: true});
@@ -42,6 +43,10 @@ class Rooms extends Component {
         axios.post(`${ROOT_API_URL}/room`, roomData)
             .then((response) => {
                 this.updateRoomsState(response.data);
+
+                this.state.socket.emit('createRoom', {refresh: true});
+
+
             })
             .catch((error) => {
                 console.log(error);
@@ -57,9 +62,9 @@ class Rooms extends Component {
         this.setState({rooms: currentRoomState});
 
         /*let roomsArray = [];
-        roomsArray.push(room);
-        this.setState({rooms: roomsArray});
-        console.log("Update rooms state: ", this.state.rooms);*/
+         roomsArray.push(room);
+         this.setState({rooms: roomsArray});
+         console.log("Update rooms state: ", this.state.rooms);*/
 
     };
 
@@ -71,7 +76,7 @@ class Rooms extends Component {
                 response.data.rooms.map((room) => {
                     roomsArray.push(room);
                 });
-                
+
                 //console.log("get rooms:", roomsArray);
                 this.setState({rooms: roomsArray});
             })
@@ -87,13 +92,15 @@ class Rooms extends Component {
     };
 
 
-    componentWillMount(){
+    componentWillMount() {
         //Changing the title of the page
         document.title = "Rooms - Youtube Playlist";
     }
 
     componentDidMount() {
-
+        this.state.socket.on('rooms', (data) => {
+            console.log(data);
+        });
         this.getRooms();
     }
 
