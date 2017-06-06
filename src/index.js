@@ -19,9 +19,8 @@ if (AuthService.isLoggedIn()) {
     routes = (
         <Route path="/">
             <IndexRoute component={Rooms} socket={socket}/>
-            <Route path="/music" component={App}/>
-            <Route path="/rooms" component={Rooms}/>
-            <Route path="/room/:roomId" component={App}/>
+            <Route path="/rooms" component={Rooms} socket={socket}/>
+            <Route path="/room/:roomId" component={App} socket={socket}/>
 
             {/*Only for testing*/}
             <Route path="/login" component={Login}/>

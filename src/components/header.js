@@ -8,7 +8,13 @@ const Header = (props) => {
     if(props.location === 'app'){
         header = (
             <div className="header-wrapper">
-                <h1 className="header-title">{props.roomDetails.name}</h1>
+                <div className="header-left-wrapper">
+                    <div className="header-back-nav" onClick={props.onNavBackClick}>
+                        <img className="header-chevron" src="../img/chevron-left.svg" alt=""/>
+                    </div>
+                    <h1 className="header-title">{props.roomDetails.name}</h1>
+                </div>
+
                 {props.children}
                 <div className="user-details" onClick={AuthService.logout}>{AuthService.getUserDetails()}</div>
             </div>

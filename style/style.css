@@ -69,7 +69,7 @@ p{
     align-content: center;
     align-items: center;
 
-    padding: 0 20px;
+    padding-right: 20px;
 }
 
 .header-wrapper{
@@ -78,16 +78,35 @@ p{
     height: 70px;
 }
 
-.header-title{
+.header-left-wrapper{
     display: flex;
     margin: 0;
-    max-width: calc(30vw - 20px);
+    max-width: 30vw;
     width: 100%;
+}
+
+.header-title{
     align-items: center;
     font-size: 28px;
-
+    line-height: 31px;
+    margin-left: 10px;
     font-family: RobotoRegular;
     font-weight: 500;
+}
+
+.header-back-nav{
+    height: 100%;
+    max-width: 70px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.header-back-nav:hover{
+    cursor: pointer;
+
+    background: #424242;
 }
 
 .user-details{

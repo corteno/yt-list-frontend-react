@@ -6,7 +6,7 @@ import io from 'socket.io-client';
 import AuthService from '../utils/AuthService';
 
 import RootApiUrl from '../utils/RootApiUrl';
-var socket = io.connect(RootApiUrl);
+
 
 
 
@@ -117,9 +117,7 @@ class Login extends Component {
     };
 
     componentWillMount(){
-        socket.on('test', (data) => {
-            console.log(data);
-        });
+
     };
 
 

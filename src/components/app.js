@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import _ from 'lodash';
 import axios from 'axios';
 import YTFormat from 'youtube-duration-format';
-
+import {browserHistory} from 'react-router';
 
 
 import SearchBar from './search_bar';
@@ -21,7 +21,6 @@ const MAX_RESULTS = 20;
 import RootApiUrl from '../utils/RootApiUrl';
 
 
-
 class App extends Component {
     constructor(props) {
         super(props);
@@ -30,7 +29,9 @@ class App extends Component {
             videos: [],
             playlist: [],
             currentVideo: {},
-            roomDetails: {}
+            roomDetails: {},
+            socket: this.props.route.socket,
+            userList: []
         };
 
     }
@@ -120,6 +121,7 @@ class App extends Component {
         axios.get(`${RootApiUrl}/room/${this.props.params.roomId}`)
             .then((res) => {
                 this.setState({roomDetails: res.data[0]});
+
             })
             .catch((e) => {
                 console.log(e);
@@ -168,7 +170,13 @@ class App extends Component {
 
     playNextInList = () => {
         this.onPlayListItemDelete(this.state.currentVideo);
-        console.log('Play next');
+        //console.log('Play next');
+    };
+
+    onNavBackClick = () => {
+        this.state.socket.emit('leaveRoom', {room: this.state.roomDetails.id});
+
+        browserHistory.goBack();
     };
 
 
@@ -177,10 +185,37 @@ class App extends Component {
         this.getPlayListItems();
         this.getRoomDetails();
 
+
+        this.state.socket.on('test', (data) => {
+            console.log("test", data);
+        });
+
     };
 
-    componentDidMount(){
+    componentDidMount() {
+        const checkVariable = () => {
+            if (this.state.roomDetails !== undefined) {
+                //console.log("Room details loaded");
 
+                this.state.socket.emit('enterRoom', this.state.roomDetails.id);
+                this.state.socket.on('enterRoom', (data) => {
+                    console.log("Room ID", data);
+                    //Sender
+                    this.state.socket.emit(this.state.roomDetails.id, {
+                        message: `User entered room ${this.state.roomDetails.id}`
+                    });
+
+                    //Listener
+                    this.state.socket.on(this.state.roomDetails.id, (data) => {
+                        console.log("Custom ID", data);
+                    });
+
+                });
+
+
+            }
+        };
+        setTimeout(checkVariable, 500);
     };
 
 
@@ -194,6 +229,7 @@ class App extends Component {
                 <Header
                     roomDetails={this.state.roomDetails}
                     location={'app'}
+                    onNavBackClick={this.onNavBackClick}
                 >
                     <SearchBar onSearchTermChange={videoSearch}/>
                 </Header>
