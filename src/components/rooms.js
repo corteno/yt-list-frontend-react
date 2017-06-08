@@ -87,8 +87,12 @@ class Rooms extends Component {
     };
 
     onRoomClick = (id) => {
+        this.state.socket.emit('leaveRooms', {
+            username: AuthService.getUserDetails()
+        });
+
         browserHistory.push(`/room/${id}`);
-        console.log(`Clicked on room ${id}`);
+        /*console.log(`Clicked on room ${id}`);*/
     };
 
 

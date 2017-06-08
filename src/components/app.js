@@ -10,6 +10,7 @@ import VideoList from './video_list';
 import PlayList from './playlist';
 import YoutubePlayer from './youtube_player';
 import Header from './header';
+import AuthService from '../utils/AuthService';
 
 const API_KEY = 'AIzaSyDKSHOjEWO3fWq5MWLrJmavVJd7MucgtuQ';
 const ROOT_URL = 'https://www.googleapis.com/youtube/v3/search';
@@ -174,7 +175,10 @@ class App extends Component {
     };
 
     onNavBackClick = () => {
-        this.state.socket.emit('leaveRoom', {room: this.state.roomDetails.id});
+        this.state.socket.emit('unsubscribe', {
+            roomId: this.state.roomDetails.id,
+            username: AuthService.getUserDetails()
+        });
 
         browserHistory.goBack();
     };
@@ -195,14 +199,27 @@ class App extends Component {
     componentDidMount() {
         const checkVariable = () => {
             if (this.state.roomDetails !== undefined) {
-                //console.log("Room details loaded");
+                /*console.log(this.state.roomDetails.id);*/
 
-                this.state.socket.emit('enterRoom', this.state.roomDetails.id);
-                this.state.socket.on('enterRoom', (data) => {
-                    console.log("Room ID", data);
+                this.state.socket.emit('subscribe', {
+                    roomId: this.state.roomDetails.id,
+                    username: AuthService.getUserDetails()
+                });
+
+                this.state.socket.emit(this.state.roomDetails.id, {
+                    message: `Hello from the Client`
+                });
+                this.state.socket.on(this.state.roomDetails.id, (data) => {
+                    console.log("From server:", data);
+                });
+                
+                /*this.state.socket.on('enterRoom', (data) => {
+                    console.log("Entered room (CS)", data);
+                    console.log("Room ID:", this.state.roomDetails.id);
+
                     //Sender
                     this.state.socket.emit(this.state.roomDetails.id, {
-                        message: `User entered room ${this.state.roomDetails.id}`
+                        message: `${AuthService.getUserDetails()} entered room ${this.state.roomDetails.id}`
                     });
 
                     //Listener
@@ -210,7 +227,7 @@ class App extends Component {
                         console.log("Custom ID", data);
                     });
 
-                });
+                });*/
 
 
             }
