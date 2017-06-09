@@ -2,13 +2,13 @@ import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import router, {browserHistory} from 'react-router';
 
-const ROOT_API_URL = 'https://yt-music-api.herokuapp.com';
+import RootApiUrl from './RootApiUrl';
 
 
 
 function login(user) {
     return new Promise((resolve, reject) => {
-        axios.post(`${ROOT_API_URL}/login`, user)
+        axios.post(`${RootApiUrl}/login`, user)
             .then((response) => {
 
 

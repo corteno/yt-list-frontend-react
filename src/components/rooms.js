@@ -7,9 +7,8 @@ import {browserHistory} from 'react-router';
 
 import Header from './header';
 import RoomList from './room_list';
+import RootApiUrl from '../utils/RootApiUrl';
 
-
-const ROOT_API_URL = 'https://yt-music-api.herokuapp.com';
 
 class Rooms extends Component {
     constructor(props) {
@@ -40,7 +39,7 @@ class Rooms extends Component {
             id: shortid.generate()
         };
 
-        axios.post(`${ROOT_API_URL}/room`, roomData)
+        axios.post(`${RootApiUrl}/room`, roomData)
             .then((response) => {
                 this.updateRoomsState(response.data);
 
@@ -69,7 +68,7 @@ class Rooms extends Component {
     };
 
     getRooms = () => {
-        axios.get(`${ROOT_API_URL}/rooms`)
+        axios.get(`${RootApiUrl}/rooms`)
             .then((response) => {
 
                 let roomsArray = [];
