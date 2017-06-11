@@ -4,6 +4,7 @@ import Prompt from './prompt';
 import AuthService from '../utils/AuthService';
 import shortid from 'shortid';
 import {browserHistory} from 'react-router';
+import io from 'socket.io-client';
 
 import Header from './header';
 import RoomList from './room_list';
@@ -17,7 +18,7 @@ class Rooms extends Component {
         this.state = {
             createRoom: false,
             rooms: [],
-            socket: this.props.route.socket
+            socket: io.connect(RootApiUrl)
         };
     }
 
@@ -105,7 +106,7 @@ class Rooms extends Component {
         this.state.socket.on('rooms', (data) => {
             console.log(data);
 
-            if(data.refresh){
+            if (data.refresh) {
                 this.getRooms();
             }
 

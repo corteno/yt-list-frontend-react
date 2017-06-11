@@ -11,16 +11,14 @@ import NotFound from'./components/404';
 import AuthService from './utils/AuthService';
 import RootApiUrl from './utils/RootApiUrl';
 
-var socket = io.connect(RootApiUrl);
-
 let routes;
 
 if (AuthService.isLoggedIn()) {
     routes = (
         <Route path="/">
-            <IndexRoute component={Rooms} socket={socket}/>
-            <Route path="/rooms" component={Rooms} socket={socket}/>
-            <Route path="/room/:roomId" component={App} socket={socket}/>
+            <IndexRoute component={Rooms} />
+            <Route path="/rooms" component={Rooms} />
+            <Route path="/room/:roomId" component={App} />
 
             {/*Only for testing*/}
             <Route path="/login" component={Login}/>

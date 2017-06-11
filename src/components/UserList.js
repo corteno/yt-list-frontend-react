@@ -1,12 +1,23 @@
 import React, {Component} from 'react';
 import UserListItem from './UserListItem';
+import shortid from 'shortid';
 
 const UserList = (props) => {
-    let playlistItems;
+    let userListItems;
+
+    userListItems = props.userList.map((user) => {
+        return (
+            <UserListItem
+                key={shortid.generate()}
+                username={user}
+            />
+        );
+    });
+
 
     return (
         <ul className="user-list-wrapper">
-            users go here
+            {userListItems}
         </ul>
     );
 

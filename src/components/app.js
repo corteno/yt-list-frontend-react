@@ -3,7 +3,7 @@ import _ from 'lodash';
 import axios from 'axios';
 import YTFormat from 'youtube-duration-format';
 import {browserHistory} from 'react-router';
-
+import io from 'socket.io-client';
 
 import SearchBar from './search_bar';
 import VideoList from './video_list';
@@ -21,7 +21,8 @@ const MAX_RESULTS = 20;
 
 //make it so it's localhost:3000 for local testing
 import RootApiUrl from '../utils/RootApiUrl';
-
+//const socket = io.connect(RootApiUrl);
+//Try having socket here
 
 class App extends Component {
     constructor(props) {
@@ -32,7 +33,7 @@ class App extends Component {
             playlist: [],
             currentVideo: {},
             roomDetails: {},
-            socket: this.props.route.socket,
+            socket: io.connect(RootApiUrl),
             userList: []
         };
 
@@ -102,6 +103,7 @@ class App extends Component {
     }
 
     getPlayListItems() {
+
         axios.get(`${RootApiUrl}/songs/${this.props.params.roomId}`)
             .then((response) => {
                 let songsArray = [];
@@ -113,10 +115,13 @@ class App extends Component {
                 //Set the current video to the first one
                 this.setState({currentVideo: this.state.playlist[0]});
                 //console.log(this.state.playlist);
+
             })
             .catch((e) => {
                 return console.log(e);
             });
+
+
     };
 
     getRoomDetails() {
@@ -144,10 +149,18 @@ class App extends Component {
                 //Refresh playlist - Need for an arrow function
                 this.getPlayListItems();
 
+                this.refreshPlaylistForOthers();
+
             })
             .catch((e) => {
                 console.error(e);
             });
+    };
+
+    refreshPlaylistForOthers = () => {
+        this.state.socket.emit('refresh', {
+            type: 'playlist'
+        });
     };
 
     //Deleting
@@ -160,6 +173,8 @@ class App extends Component {
                 }
 
                 this.getPlayListItems();
+
+                this.refreshPlaylistForOthers();
                 //console.log(response);
             })
             .catch((e) => {
@@ -175,10 +190,16 @@ class App extends Component {
         //console.log('Play next');
     };
 
+    setUserList = (userArray) => {
+        this.setState({userList: userArray});
+    };
+
     onNavBackClick = () => {
         this.state.socket.emit('unsubscribe', {
             roomId: this.state.roomDetails.id,
             username: AuthService.getUserDetails()
+        }, () => {
+            console.log('Disconnect');
         });
 
 
@@ -190,8 +211,6 @@ class App extends Component {
     componentWillMount() {
         this.getPlayListItems();
         this.getRoomDetails();
-
-
     };
 
     componentDidMount() {
@@ -199,21 +218,31 @@ class App extends Component {
             if (this.state.roomDetails !== undefined) {
                 /*console.log(this.state.roomDetails.id);*/
 
-
                 this.state.socket.emit('subscribe', {
                     roomId: this.state.roomDetails.id,
                     username: AuthService.getUserDetails()
                 });
 
+                this.state.socket.on('refresh', (data) => {
+                    if (data.type === 'userlist') {
+                        //Refreshing the userlist
+                        this.setUserList(data.content);
+                    } else if (data.type === 'playlist') {
+                        this.getPlayListItems();
+                    }
+
+
+                });
+
                 /*this.state.socket.emit(this.state.roomDetails.id, {
-                    message: `Hello from the Client`
-                });*/
+                 message: `Hello from the Client`
+                 });*/
 
                 this.state.socket.on(this.state.roomDetails.id, (data) => {
                     //const userlist = data.room.userlist;
-                    console.log("From server:", data.userlist);
+                    //console.log("From server:", data);
+                    this.setUserList(data);
                 });
-
 
             }
         };

@@ -795,6 +795,35 @@ input:-webkit-autofill:active {
 }
 
 
+.user-list-wrapper{
+    flex-direction: column;
+    margin: 0;
+    padding-left: 20px;
+}
+
+.user-list-item{
+    font-size: 18px;
+    font-family: RobotoMedium;
+    color: #757575;
+
+    padding: 10px 0;
+}
+
+.user-list-avatar{
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+
+    background: url("../img/avatar_placeholder.png") no-repeat center center;
+    background-size: contain;
+}
+
+.user-list-username{
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
 
 /*
 ================================
