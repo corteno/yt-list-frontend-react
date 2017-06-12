@@ -34,7 +34,8 @@ class App extends Component {
             currentVideo: {},
             roomDetails: {},
             socket: io.connect(RootApiUrl),
-            userList: []
+            userList: [],
+            speakers: []
         };
 
     }
@@ -159,7 +160,8 @@ class App extends Component {
 
     refreshPlaylistForOthers = () => {
         this.state.socket.emit('refresh', {
-            type: 'playlist'
+            type: 'playlist',
+            roomId: this.state.roomDetails.id
         });
     };
 
@@ -203,7 +205,14 @@ class App extends Component {
         });
 
 
-        browserHistory.goBack();
+        browserHistory.push('/');
+    };
+
+    onUserClick = () => {
+        this.state.socket.emit('addSpeaker', {
+            username: AuthService.getUserDetails(),
+            roomId: this.state.roomDetails.id
+        });
     };
 
 
@@ -217,17 +226,21 @@ class App extends Component {
         const checkVariable = () => {
             if (this.state.roomDetails !== undefined) {
                 /*console.log(this.state.roomDetails.id);*/
+                //console.log("Room details", this.state.roomDetails);
 
                 this.state.socket.emit('subscribe', {
                     roomId: this.state.roomDetails.id,
                     username: AuthService.getUserDetails()
                 });
 
-                this.state.socket.on('refresh', (data) => {
+                this.state.socket.on(`refresh-${this.state.roomDetails.id}`, (data) => {
+                    //console.log(`refresh-${this.state.roomDetails.id}`);
                     if (data.type === 'userlist') {
                         //Refreshing the userlist
-                        this.setUserList(data.content);
+                        //console.log("Refresh userlist", data.userlist);
+                        this.setUserList(data.userlist);
                     } else if (data.type === 'playlist') {
+                        //console.log('playlist refresh');
                         this.getPlayListItems();
                     }
 
@@ -237,11 +250,11 @@ class App extends Component {
                 /*this.state.socket.emit(this.state.roomDetails.id, {
                  message: `Hello from the Client`
                  });*/
-
+                //console.log("RoomID:", this.state.roomDetails.id);
                 this.state.socket.on(this.state.roomDetails.id, (data) => {
                     //const userlist = data.room.userlist;
                     //console.log("From server:", data);
-                    this.setUserList(data);
+                    this.setUserList(data.userlist);
                 });
 
             }
@@ -257,6 +270,11 @@ class App extends Component {
             this.videoSearch(term);
         }, 300);
 
+        /*if(this.state.userList.length > 0){
+         console.log(this.state.userList);
+         }*/
+
+
         return (
             <div className="app-wrapper">
                 <Header
@@ -270,6 +288,8 @@ class App extends Component {
                 <div className="content-wrapper">
                     <UserList
                         userList={this.state.userList}
+                        speakers={this.state.roomDetails.speakers}
+                        onUserClick={this.onUserClick}
                     />
                     <div className="playlist-container">
                         <YoutubePlayer
