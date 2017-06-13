@@ -7,17 +7,18 @@ const UserList = (props) => {
     let userListItems;
     userListItems = props.userList.map((user) => {
         //Other users can see who the speaker is
-        if(props.speakers.includes(user)){
+        if(props.speakers.includes(user) && props.clientUsername === user){
             //console.log('Speaker', user);
             return (
                 <UserListItem
                     key={shortid.generate()}
                     username={user}
                     speaker={true}
-                    onUserClick={props.onUserClick}
+                    onSpeakerClick={props.onSpeakerClick}
+                    speakerClickable={true}
                 />
             );
-        } else if(AuthService.getUserDetails() == user){
+        } else if(props.clientUsername === user){
             //console.log('Not speaker but user', user);
             //You can see your own status as a speaker
             return (
@@ -25,7 +26,16 @@ const UserList = (props) => {
                     key={shortid.generate()}
                     username={user}
                     speaker={false}
-                    onUserClick={props.onUserClick}
+                    onSpeakerClick={props.onSpeakerClick}
+                />
+            );
+        } else if(props.speakers.includes(user)){
+            return (
+                <UserListItem
+                    key={shortid.generate()}
+                    username={user}
+                    speaker={true}
+                    speakerClickable={false}
                 />
             );
         } else {
@@ -35,7 +45,7 @@ const UserList = (props) => {
                 <UserListItem
                     key={shortid.generate()}
                     username={user}
-                    onUserClick={props.onUserClick}
+                    onSpeakerClick={props.onSpeakerClick}
                     speaker={null}
                 />
             );

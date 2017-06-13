@@ -824,6 +824,7 @@ input:-webkit-autofill:active {
     margin-left: 10px;
 }
 
+
 .user-list-speaker{
     align-items: center;
     font-size: 14px;
@@ -837,6 +838,10 @@ input:-webkit-autofill:active {
 
 .user-list-item .room-owner{
     color: #512DA8;
+}
+
+.not-clickable{
+    cursor: default;
 }
 
 

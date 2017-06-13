@@ -7,15 +7,23 @@ const UserListItem = (props) => {
 
     if (props.speaker) {
         //console.log(props.speaker);
-        userlistSpeaker = (
-            <div className="user-list-speaker" onClick={props.onUserClick}>
-                <img src="../img/volume-2.svg" alt=""/>
-            </div>
-        );
+        if(!props.speakerClickable){
+            userlistSpeaker = (
+                <div className="user-list-speaker not-clickable" >
+                    <img src="../img/volume-2.svg" alt=""/>
+                </div>
+            );
+        } else {
+            userlistSpeaker = (
+                <div className="user-list-speaker" onClick={() => {props.onSpeakerClick(props.username)}} >
+                    <img src="../img/volume-2.svg" alt=""/>
+                </div>
+            );
+        }
     } else if(props.speaker == false) {
         //console.log(props.speaker);
         userlistSpeaker = (
-            <div className="user-list-speaker">
+            <div className="user-list-speaker" onClick={() => {props.onSpeakerClick(props.username)}} >
                 <img src="../img/volume-x.svg" alt=""/>
             </div>
         );

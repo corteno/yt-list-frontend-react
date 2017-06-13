@@ -35,7 +35,9 @@ class App extends Component {
             roomDetails: {},
             socket: io.connect(RootApiUrl),
             userList: [],
-            speakers: []
+            userDetails: {
+                username: AuthService.getUserDetails()
+            }
         };
 
     }
@@ -136,6 +138,43 @@ class App extends Component {
             });
     };
 
+    setUserDetails() {
+        this.setState({userDetails: {username: AuthService.getUserDetails()}});
+    }
+
+    setInitialSpeakerValue = () => {
+        if(this.state.roomDetails.speakers.includes(this.state.userDetails.username)){
+            this.setState({isSpeaker: true}, () => {
+                //console.log("Setting initial isSpeaker", this.state.isSpeaker);
+            });
+        } else {
+            this.setState({isSpeaker: false}, () => {
+                //console.log("Setting initial isSpeaker", this.state.isSpeaker);
+            });
+        }
+    };
+
+    setSpeakers = (speakersArray) => {
+        let currentRoomDetails = this.state.roomDetails;
+        //console.log(currentRoomDetails.speakers);
+        currentRoomDetails.speakers = speakersArray;
+
+        //console.log('Before state set:', this.state.roomDetails);
+        this.setState({roomDetails: currentRoomDetails}, () => {
+            if (this.state.roomDetails.speakers.includes(this.state.userDetails.username)) {
+                this.setState({isSpeaker: true}, () => {
+                    //console.log("Setting isSpeaker", this.state.isSpeaker);
+                    this.onSpeakerChange(this.state.isSpeaker);
+                });
+            } else {
+                this.setState({isSpeaker: false}, () => {
+                    //console.log("Setting isSpeaker", this.state.isSpeaker);
+                    this.onSpeakerChange(this.state.isSpeaker);
+                });
+            }
+        });
+    };
+
 
     //Use an arrow function if you need to use another function in the same scope
     onVideoSelect = (video) => {
@@ -164,6 +203,8 @@ class App extends Component {
             roomId: this.state.roomDetails.id
         });
     };
+
+
 
     //Deleting
     onPlayListItemDelete = (playlistItem) => {
@@ -208,18 +249,39 @@ class App extends Component {
         browserHistory.push('/');
     };
 
-    onUserClick = () => {
-        this.state.socket.emit('addSpeaker', {
-            username: AuthService.getUserDetails(),
-            roomId: this.state.roomDetails.id
-        });
+    onSpeakerClick = (user) => {
+        //console.log('Speaker clicked', this.state.roomDetails.speakers, this.state.userDetails.username);
+
+        //Checking if the client is speaker
+        if (this.state.roomDetails.speakers.includes(this.state.userDetails.username) && user === this.state.userDetails.username) {
+            //If the client is a speaker
+            //console.log(`Toggle speaker off for ${user}`, this.state.roomDetails.speakers);
+            this.state.socket.emit('removeSpeaker', {
+                roomId: this.state.roomDetails.id,
+                username: this.state.userDetails.username
+            });
+
+        } else if (user === this.state.userDetails.username) {
+            //If the client is not a speaker
+            //console.log(`Toggle speaker on for ${user}`, this.state.roomDetails.speakers);
+            this.state.socket.emit('addSpeaker', {
+                roomId: this.state.roomDetails.id,
+                username: this.state.userDetails.username
+            });
+        }
+
     };
 
+    onSpeakerChange = (isSpeaker) => {
+        return isSpeaker;
+    };
 
     //Getting playlist items on startup
     componentWillMount() {
         this.getPlayListItems();
         this.getRoomDetails();
+        this.setUserDetails();
+
     };
 
     componentDidMount() {
@@ -230,7 +292,7 @@ class App extends Component {
 
                 this.state.socket.emit('subscribe', {
                     roomId: this.state.roomDetails.id,
-                    username: AuthService.getUserDetails()
+                    username: this.state.userDetails.username
                 });
 
                 this.state.socket.on(`refresh-${this.state.roomDetails.id}`, (data) => {
@@ -240,8 +302,13 @@ class App extends Component {
                         //console.log("Refresh userlist", data.userlist);
                         this.setUserList(data.userlist);
                     } else if (data.type === 'playlist') {
+                        //Refresing playlist
                         //console.log('playlist refresh');
                         this.getPlayListItems();
+                    } else if (data.type === 'speakers') {
+                        //Refreshing speakers list
+                        //console.log("Speakers list", data.speakers);
+                        this.setSpeakers(data.speakers)
                     }
 
 
@@ -258,6 +325,9 @@ class App extends Component {
                 });
 
             }
+            //Setting the initial isSpeaker state
+            this.setInitialSpeakerValue();
+
         };
         setTimeout(checkVariable, 500);
 
@@ -289,12 +359,14 @@ class App extends Component {
                     <UserList
                         userList={this.state.userList}
                         speakers={this.state.roomDetails.speakers}
-                        onUserClick={this.onUserClick}
+                        onSpeakerClick={this.onSpeakerClick}
+                        clientUsername={this.state.userDetails.username}
                     />
                     <div className="playlist-container">
                         <YoutubePlayer
                             currentVideo={this.state.currentVideo}
                             playNextInList={this.playNextInList}
+                            isSpeaker={this.state.isSpeaker}
                         />
                         <PlayList
                             playlist={this.state.playlist}
