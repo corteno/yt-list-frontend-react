@@ -367,6 +367,8 @@ class App extends Component {
                             currentVideo={this.state.currentVideo}
                             playNextInList={this.playNextInList}
                             isSpeaker={this.state.isSpeaker}
+                            onNextClick={this.onPlayListItemDelete}
+                            currentSong={this.state.currentVideo}
                         />
                         <PlayList
                             playlist={this.state.playlist}
