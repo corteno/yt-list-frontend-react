@@ -261,6 +261,7 @@ class App extends Component {
                 username: this.state.userDetails.username
             });
 
+
         } else if (user === this.state.userDetails.username) {
             //If the client is not a speaker
             //console.log(`Toggle speaker on for ${user}`, this.state.roomDetails.speakers);
@@ -268,6 +269,7 @@ class App extends Component {
                 roomId: this.state.roomDetails.id,
                 username: this.state.userDetails.username
             });
+
         }
 
     };
@@ -369,6 +371,7 @@ class App extends Component {
                             isSpeaker={this.state.isSpeaker}
                             onNextClick={this.onPlayListItemDelete}
                             currentSong={this.state.currentVideo}
+                            onSpeakerClick={this.onSpeakerClick}
                         />
                         <PlayList
                             playlist={this.state.playlist}

@@ -11,13 +11,13 @@ class YoutubePlayer extends Component {
             isSpeaker: this.props.isSpeaker,
             isPlaying: false,
             currentTime: 0,
-            videoDuration: 0
+            videoDuration: 0,
+            currentVolume: 0
         }
     }
 
     onReady = (event) => {
         this.setState({player: event.target}, () => {
-
             //console.log(this.state.player);
         });
     };
@@ -27,6 +27,12 @@ class YoutubePlayer extends Component {
         this.setState({isPlaying: true}, () => {
         });
         this.setState({videoDuration: Math.round(this.state.player.getDuration())});
+
+
+        //Setting Initial volume
+        this.setState({currentVolume: this.state.player.getVolume()}, () => {
+            //console.log("Current volume YT", this.state.currentVolume);
+        });
 
         this.setCurrentTime(Math.round(this.state.player.getCurrentTime()));
         //Checking for the current time of the video every 500ms
@@ -67,14 +73,36 @@ class YoutubePlayer extends Component {
         });
     };
 
-    onStateChange = (event) => {
-        //console.log(event.target);
-    };
-
     onEnd = () => {
         this.props.playNextInList();
 
         this.setState({isPlaying:false});
+    };
+
+    seekTo = (value) => {
+        //console.log("Seek to:", value);
+        this.state.player.seekTo(value);
+    };
+
+    setVolume = (value) => {
+        //console.log(value);
+        if(this.state.player){
+            if(value > 0){
+                this.setState({currentVolume: value}, () => {
+                    this.state.player.unMute();
+                    this.state.player.setVolume(value);
+                });
+
+            } else if(value === 0) {
+                this.setState({currentVolume: value}, () => {
+                    this.state.player.mute();
+                    this.state.player.setVolume(value);
+                });
+
+            }
+        }
+
+
     };
 
 
@@ -95,20 +123,12 @@ class YoutubePlayer extends Component {
         }
     }
 
-    /*setTime = () => {
-     if(this.state.player){
-     if(this.state.currentTime !== Math.ceil(this.state.player.getCurrentTime())){
-     this.setCurrentTime(Math.ceil(this.state.player.getCurrentTime()));
-     }
-     }
-     };*/
-
     render() {
         let opts = {
             playerVars: { // https://developers.google.com/youtube/player_parameters
                 //Enable once done testing
                 //autoplay: 1,
-                /*controls: 0,*/
+                controls: 0,
                 showinfo: 0,
                 autohide: 1,
                 rel: 0
@@ -137,11 +157,16 @@ class YoutubePlayer extends Component {
                 />
                 <PlayerController
                     isPlaying={this.state.isPlaying}
+                    isSpeaker={this.props.isSpeaker}
                     onPlayPauseClick={this.onPlayPauseClick}
                     onNextClick={this.props.onNextClick}
                     currentSong={this.props.currentSong}
                     currentTime={this.state.currentTime}
+                    currentVolume={this.state.currentVolume}
                     videoDuration={this.state.videoDuration}
+                    seekTo={this.seekTo}
+                    setVolume={this.setVolume}
+                    onSpeakerClick={this.props.onSpeakerClick}
                 />
             </div>
         );
