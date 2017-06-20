@@ -71,6 +71,7 @@ class Prompt extends Component {
             <div className="prompt-wrapper">
                 <div className="prompt-background" onClick={this.props.onPromptClose}></div>
                 <form className="prompt-window login-form" onSubmit={this.onSubmit}>
+                    <div className="close-prompt" onClick={this.props.onPromptClose}>×</div>
                     <h1>Create a room</h1>
 
                     <div className="input-wrapper">

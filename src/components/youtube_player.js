@@ -127,11 +127,12 @@ class YoutubePlayer extends Component {
         let opts = {
             playerVars: { // https://developers.google.com/youtube/player_parameters
                 //Enable once done testing
-                //autoplay: 1,
+                autoplay: 1,
                 controls: 0,
                 showinfo: 0,
                 autohide: 1,
-                rel: 0
+                rel: 0,
+                iv_load_policy: 3
             }
         };
 

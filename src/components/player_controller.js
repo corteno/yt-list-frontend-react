@@ -53,6 +53,7 @@ class PlayerController extends Component {
 
         return (
             <div className="player-controller-wrapper">
+                {/*<div className="player-controller-current-song">{this.props.currentSong.title}</div>*/}
                 <div className="player-controller-seek-bar-wrapper">
                     <SeekBar
                         value={this.props.currentTime}

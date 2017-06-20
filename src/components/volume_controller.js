@@ -56,9 +56,9 @@ class VolumeController extends Component {
         //console.log(this.state.value);
         let speakerClass;
         if (this.props.isSpeaker) {
-            speakerClass = "volume-icon volume-speaker"
+            speakerClass = "volume-icon volume-speaker player-button"
         } else {
-            speakerClass = "volume-icon volume-mute"
+            speakerClass = "volume-icon volume-mute player-button"
         }
 
         return (

@@ -340,7 +340,7 @@ class App extends Component {
     render() {
         const videoSearch = _.debounce((term) => {
             this.videoSearch(term);
-        }, 300);
+        }, 200);
 
         /*if(this.state.userList.length > 0){
          console.log(this.state.userList);

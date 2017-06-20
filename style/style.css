@@ -39,6 +39,7 @@ p {
 }
 
 .app-wrapper {
+    position: relative;
     width: 100%;
     justify-content: center;
     align-items: center;
@@ -180,9 +181,27 @@ p {
 }
 
 .prompt-window {
+    position: relative;
     z-index: 100;
     height: auto;
     padding: 30px !important;
+}
+
+.close-prompt{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+
+    justify-content: center;
+    align-items: center;
+
+    height: 20px;
+    width: 20px;
+
+    font-size: 24px;
+    color: #BDBDBD;
+
+    cursor: pointer;
 }
 
 .private-radio {
@@ -362,7 +381,7 @@ p {
 .search-bar > input:before {
     position: absolute;
 
-    content: 'asd';
+    content: '';
     height: 50px;
     width: 50px;
 }
@@ -441,11 +460,30 @@ button:focus {
     cursor: pointer;
     height: 25px;
     width: 25px;
+
+    opacity: 0.7;
+    -webkit-transition: 0.2s;
+    -moz-transition: 0.2s;
+    -ms-transition: 0.2s;
+    -o-transition: 0.2s;
+    transition: 0.2s;
+}
+
+.player-button:hover{
+    opacity: 1;
+    -webkit-transition: 0.2s;
+    -moz-transition: 0.2s;
+    -ms-transition: 0.2s;
+    -o-transition: 0.2s;
+    transition: 0.2s;
 }
 
 .play-button {
     background: url("../img/play.svg") no-repeat center center;
-    background-size: contain;
+}
+
+.play-button:hover{
+    opacity: 1;
 }
 
 .pause-button {
@@ -454,7 +492,7 @@ button:focus {
 }
 
 .next-button {
-    margin-left: 15px;
+    margin-left: 10px;
     background: url("../img/skip-forward.svg") no-repeat center center;
     background-size: contain;
 }
@@ -632,13 +670,21 @@ button:focus {
     display: none;
 }
 
-/*.volume-bar::-webkit-slider-runnable-track{
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
 
-    height: 4px;
+/*
+================================
+     PLAYER TEST ON PHONE
+================================
+*/
+
+/*.player-controller-wrapper{
+    position: fixed;
+    bottom: 0;
+    left: 0;
 }*/
+
+
+
 
 /*
 ================================
@@ -693,11 +739,11 @@ button:focus {
 }
 
 .playlist-wrapper .list-item:first-of-type {
-    background: #424242;
+    background: #262626;
 }
 
 .playlist-wrapper .list-item:first-of-type .video-details, .playlist-wrapper .list-item:first-of-type .video-delete {
-    border-bottom-color: #424242;
+    border-bottom-color: #262626;
 }
 
 .playlist-wrapper .list-item:first-of-type .video-title {
@@ -882,6 +928,7 @@ button:focus {
 }
 
 .login-wrapper {
+    padding: 0 20px;
     width: 100%;
     justify-content: center;
 }
@@ -1067,6 +1114,135 @@ input:-webkit-autofill:active {
 .not-clickable {
     cursor: default;
 }
+
+/*
+================================
+          RESPONSIVE
+================================
+*/
+
+@media screen and (max-width: 600px) {
+    .header-wrapper, .header{
+        min-height: 50px;
+        height: 50px;
+        align-items: center;
+    }
+
+    .header{
+        position: fixed;
+        padding:0;
+        top: 0;
+    }
+
+    .header-chevron{
+        height: 40px;
+        width: 40px;
+    }
+
+    .search-bar, .search-input{
+        padding-left: 5px;
+        height: 30px;
+        background: transparent;
+        box-shadow: none;
+        border-bottom: 1px solid #424242;
+
+        color: #BDBDBD;
+    }
+
+    .room-list{
+        margin-top: 50px;
+        min-width: 100%;
+    }
+
+    .content-wrapper{
+        position: absolute;
+        top: 50px;
+    }
+
+    .prompt-window{
+        margin: 0 20px;
+    }
+
+    .player-controller-wrapper{
+        position: fixed;
+        bottom: 0;
+        left: 0;
+    }
+
+    .header-title{
+        display: none;
+        justify-content: center;
+        font-size: 14px;
+        margin-left: 0;
+    }
+
+    .header-back-nav{
+        width: 45px;
+    }
+
+    .video-list{
+        height: calc(100vh - 140px);
+    }
+
+    .user-list-wrapper, .video-list{
+        display: none;
+    }
+
+    .playlist-container{
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .youtube-player-wrapper {
+        height: 200px;
+        overflow: hidden;
+    }
+
+    .youtube-player-wrapper > span{
+        height: 100%;
+    }
+
+    .user-details{
+        padding-right: 15px;
+        width: auto;
+    }
+
+    ::-webkit-scrollbar {
+        display: none;
+    }
+
+    .video-title{
+        font-size: 13px;
+        line-height: 15px;
+    }
+
+    .video-duration{
+        font-size: 11px;
+    }
+
+    .playlist-wrapper .list-item{
+        min-height: 60px;
+        height: 60px;
+    }
+
+    .video-thumbnail {
+        display: none;
+    }
+
+    .video-details{
+        height: 100%;
+        margin-left: 5px;
+        padding: 0;
+    }
+    .video-delete{
+        height: 100%;
+    }
+}
+
+
+
+
+
 
 /*
 ================================
