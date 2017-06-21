@@ -72,16 +72,20 @@ class VolumeController extends Component {
                         this.props.onSpeakerClick(AuthService.getUserDetails());
                     }}
                 />
-                <input
-                    type="range"
-                    className="volume-bar"
-                    min={this.state.min}
-                    max={this.state.max}
-                    defaultValue={this.props.currentVolume}
-                    value={this.props.currentVolume}
-                    onChange={this.onChange}
+                <div className="volume-input-wrapper">
+                    <input
+                        type="range"
+                        className="volume-bar"
+                        min={this.state.min}
+                        max={this.state.max}
+                        defaultValue={this.props.currentVolume}
+                        value={this.props.currentVolume}
+                        onChange={this.onChange}
 
-                />
+                    />
+                    <div className="progress-bar" style={{width: `${(this.state.value/this.state.max) *100}%`}}></div>
+                </div>
+
                 {this.props.children}
             </div>
 

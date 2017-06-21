@@ -55,13 +55,24 @@ class PlayerController extends Component {
             <div className="player-controller-wrapper">
                 {/*<div className="player-controller-current-song">{this.props.currentSong.title}</div>*/}
                 <div className="player-controller-seek-bar-wrapper">
+                    <div className="time-display">
+                        {this.formatTime(this.props.currentTime)}
+                    </div>
+
                     <SeekBar
                         value={this.props.currentTime}
                         max={this.props.videoDuration}
                         seekTo={this.props.seekTo}
                     />
+                    <div className="time-display">
+                        {this.formatTime(this.props.videoDuration)}
+                    </div>
+
                 </div>
                 <div className="player-controller-controls">
+                    <button
+                        className="player-button favourite-button"
+                    />
                     <button
                         className={pauseStartButtonClass}
                         onClick={this.props.onPlayPauseClick}
@@ -78,14 +89,15 @@ class PlayerController extends Component {
                         isSpeaker={this.props.isSpeaker}
                         currentVolume={this.props.currentVolume}
                     >
-                        <div className="time-display">
-                            {this.formatTime(this.props.currentTime)}
-                            <span className="divider">/</span>
-                            {this.formatTime(this.props.videoDuration)}
-                        </div>
+                        {/*<div className="time-display">
+                         {this.formatTime(this.props.currentTime)}
+                         <span className="divider">/</span>
+                         {this.formatTime(this.props.videoDuration)}
+                         </div>*/}
                     </VolumeController>
 
                 </div>
+
 
             </div>
         );

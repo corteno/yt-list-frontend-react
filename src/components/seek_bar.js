@@ -32,15 +32,19 @@ class Seekbar extends Component {
     render() {
 
         return (
-            <input
-                type="range"
-                className="seek-bar"
-                min={this.state.min}
-                max={this.state.max}
-                defaultValue={this.state.value}
-                value={this.state.value}
-                onChange={this.onChange}
-            />
+            <div className="seek-bar-wrapper">
+                <input
+                    type="range"
+                    className="seek-bar"
+                    min={this.state.min}
+                    max={this.state.max}
+                    defaultValue={this.state.value}
+                    value={this.state.value}
+                    onChange={this.onChange}
+                />
+                <div className="progress-bar" style={{width: `${(this.state.value/this.state.max) *100}%`}}></div>
+            </div>
+
         );
     }
 }
