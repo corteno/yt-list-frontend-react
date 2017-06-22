@@ -95,12 +95,25 @@ p {
 }
 
 .header-back-nav {
-    height: 100%;
     max-width: 70px;
+}
+
+.header-main-button{
+    height: 100%;
     width: 100%;
     align-items: center;
     justify-content: center;
+}
 
+.header-menu{
+    opacity: 0.7;
+    max-width: 50px;
+    margin: 0 10px;
+}
+
+.header-menu-icon{
+    height: 30px;
+    width: 30px;
 }
 
 .header-back-nav:hover {
@@ -354,6 +367,7 @@ p {
 
 .search-bar {
     /* padding: 0 10px;*/
+    position: relative;
     max-width: calc(40vw);
     width: 100%;
     height: 70px;
@@ -375,6 +389,26 @@ p {
     font-size: 18px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     border: none;
+}
+
+.search-bar-mobile{
+    position: relative;
+    align-items: center;
+}
+
+
+.search-bar-mobile .search-input{
+    border-bottom: none;
+}
+
+.search-bar-mobile .search-input::placeholder{
+    font-size: 14px;
+}
+
+.search-input-icon{
+    opacity: 0.7;
+    height: 22px;
+    width: 22px;
 
 }
 
@@ -487,6 +521,14 @@ button:focus {
     background-size: contain;
 }
 
+.user-icon{
+    opacity: 0.7;
+}
+
+.user-icon:hover{
+    opacity: 1;
+}
+
 .favourite-button {
     height: 22px;
     width: 22px;
@@ -571,18 +613,12 @@ button:focus {
     transform-origin: 0% 50%;
 
     cursor: pointer;
-    /*overflow: hidden;*/
-    /*box-shadow: -80px 0 0px 80px #512DA8;*/
-
     transition: 0.5s;
 }
 
 .player-controller-seek-bar-wrapper:hover .seek-bar::-webkit-slider-thumb {
-    /*transform: scaleY(1.5);
-    transition: 0.5s;*/
     height: 15px;
     width: 15px;
-
 
 }
 
@@ -596,16 +632,8 @@ button:focus {
     height: 0px;
     background: #512DA8;
     border-radius: 8px;
-    /*border: 4px solid #512DA8;*/
-    /*box-shadow: -500px 0 0 500px #512DA8;*/
-
 }
 
-.seek-bar::-webkit-slider-thumb:hover {
-    height: 15px;
-    width: 15px;
-    border-radius: 8px;
-}
 
 /** FF*/
 .seek-bar::-moz-range-progress {
@@ -1191,6 +1219,10 @@ input:-webkit-autofill:active {
         width: 40px;
     }
 
+    .header-left-wrapper{
+        width: auto;
+    }
+
     .search-bar, .search-input {
         padding-left: 5px;
         height: 30px;
@@ -1273,8 +1305,8 @@ input:-webkit-autofill:active {
     }
 
     .playlist-wrapper .list-item {
-        min-height: 60px;
-        height: 60px;
+        min-height: 50px;
+        height: 50px;
     }
 
     .video-thumbnail {
@@ -1289,7 +1321,24 @@ input:-webkit-autofill:active {
 
     .video-delete {
         height: 100%;
+        font-size: 28px;
+        padding: 0 15px;
     }
+
+    .volume-controller-wrapper:hover .volume-bar{
+        display: none;
+    }
+    .volume-controller-wrapper{
+        position: absolute;
+        right: 20px;
+    }
+
+    .user-details{
+        content: '';
+    }
+
+
+
 }
 
 /*

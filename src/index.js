@@ -12,6 +12,22 @@ import AuthService from './utils/AuthService';
 import RootApiUrl from './utils/RootApiUrl';
 
 let routes;
+/*let isMobile;
+
+if(window.innerWidth <= 600){
+    isMobile = true;
+} else {
+    isMobile = false;
+}
+
+window.addEventListener("resize", () => {
+    if(window.innerWidth <= 600){
+        isMobile = true;
+    } else {
+        isMobile = false;
+    }
+    console.log(isMobile);
+});*/
 
 if (AuthService.isLoggedIn()) {
     routes = (

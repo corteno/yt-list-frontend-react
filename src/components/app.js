@@ -37,7 +37,12 @@ class App extends Component {
             userList: [],
             userDetails: {
                 username: AuthService.getUserDetails()
-            }
+            },
+            windowSize: {
+                width: 0,
+                height: 0
+            },
+            isMobile: false
         };
 
     }
@@ -143,7 +148,7 @@ class App extends Component {
     }
 
     setInitialSpeakerValue = () => {
-        if(this.state.roomDetails.speakers.includes(this.state.userDetails.username)){
+        if (this.state.roomDetails.speakers.includes(this.state.userDetails.username)) {
             this.setState({isSpeaker: true}, () => {
                 //console.log("Setting initial isSpeaker", this.state.isSpeaker);
             });
@@ -203,7 +208,6 @@ class App extends Component {
             roomId: this.state.roomDetails.id
         });
     };
-
 
 
     //Deleting
@@ -278,6 +282,26 @@ class App extends Component {
         return isSpeaker;
     };
 
+    onMenuClick = () => {
+        console.log('menu clicked');
+    };
+    
+    updateWindowDimensions = () => {
+        this.setState({
+            windowSize: {
+                width: window.innerWidth,
+                height: window.innerHeight
+            }
+        }, () => {
+            if(this.state.windowSize.width <= 600){
+                this.setState({isMobile: true});
+            } else {
+                this.setState({isMobile: false});
+            }
+
+        });
+    };
+
     //Getting playlist items on startup
     componentWillMount() {
         this.getPlayListItems();
@@ -286,7 +310,12 @@ class App extends Component {
 
     };
 
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateWindowDimensions);
+    };
+
     componentDidMount() {
+        //Socket.io stuff
         const checkVariable = () => {
             if (this.state.roomDetails !== undefined) {
                 /*console.log(this.state.roomDetails.id);*/
@@ -333,7 +362,8 @@ class App extends Component {
         };
         setTimeout(checkVariable, 500);
 
-
+        this.updateWindowDimensions();
+        window.addEventListener('resize', this.updateWindowDimensions);
     };
 
 
@@ -353,8 +383,13 @@ class App extends Component {
                     roomDetails={this.state.roomDetails}
                     location={'app'}
                     onNavBackClick={this.onNavBackClick}
+                    onMenuClick={this.onMenuClick}
+                    isMobile={this.state.isMobile}
                 >
-                    <SearchBar onSearchTermChange={videoSearch}/>
+                    <SearchBar
+                        onSearchTermChange={videoSearch}
+                        isMobile={this.state.isMobile}
+                    />
                 </Header>
 
                 <div className="content-wrapper">
