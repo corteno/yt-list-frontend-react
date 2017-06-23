@@ -4,6 +4,7 @@ import axios from 'axios';
 import YTFormat from 'youtube-duration-format';
 import {browserHistory} from 'react-router';
 import io from 'socket.io-client';
+import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup';
 
 import SearchBar from './search_bar';
 import VideoList from './video_list';
@@ -12,6 +13,7 @@ import YoutubePlayer from './youtube_player';
 import Header from './header';
 import AuthService from '../utils/AuthService';
 import UserList from './UserList';
+import SideMenu from './side_menu';
 
 const API_KEY = 'AIzaSyDKSHOjEWO3fWq5MWLrJmavVJd7MucgtuQ';
 const ROOT_URL = 'https://www.googleapis.com/youtube/v3/search';
@@ -42,7 +44,8 @@ class App extends Component {
                 width: 0,
                 height: 0
             },
-            isMobile: false
+            isMobile: false,
+            isSideMenuOpen: false
         };
 
     }
@@ -283,9 +286,13 @@ class App extends Component {
     };
 
     onMenuClick = () => {
-        console.log('menu clicked');
+        this.toggleSideMenu();
     };
-    
+
+    toggleSideMenu = () => {
+        this.setState({isSideMenuOpen: !this.state.isSideMenuOpen});
+    };
+
     updateWindowDimensions = () => {
         this.setState({
             windowSize: {
@@ -293,7 +300,7 @@ class App extends Component {
                 height: window.innerHeight
             }
         }, () => {
-            if(this.state.windowSize.width <= 600){
+            if (this.state.windowSize.width <= 600) {
                 this.setState({isMobile: true});
             } else {
                 this.setState({isMobile: false});
@@ -372,9 +379,19 @@ class App extends Component {
             this.videoSearch(term);
         }, 200);
 
-        /*if(this.state.userList.length > 0){
-         console.log(this.state.userList);
-         }*/
+
+        let sideMenu;
+        if (this.state.isMobile /*&& this.state.isSideMenuOpen*/) {
+            sideMenu = (
+                <SideMenu
+                    roomName={this.state.roomDetails.name}
+                    onNavBackClick={this.onNavBackClick}
+                    isSideMenuOpen={this.state.isSideMenuOpen}
+                    toggleSideMenu={this.toggleSideMenu}
+                />
+
+            );
+        }
 
 
         return (
@@ -393,6 +410,7 @@ class App extends Component {
                 </Header>
 
                 <div className="content-wrapper">
+                    {sideMenu}
                     <UserList
                         userList={this.state.userList}
                         speakers={this.state.roomDetails.speakers}
