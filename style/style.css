@@ -70,6 +70,7 @@ p {
     align-items: center;
 
     padding-right: 20px;
+    z-index: 20;
 }
 
 .header-wrapper {
@@ -177,7 +178,7 @@ p {
 
     top: 0;
     left: 0;
-    z-index: 15;
+    z-index: 50;
 
     pointer-events: none;
 
@@ -192,7 +193,7 @@ p {
 .side-menu-container{
     height: 100%;
     width: 70vw;
-    z-index: 15;
+    z-index: 20;
 }
 
 .side-menu{
@@ -310,6 +311,25 @@ p {
 .side-menu-bg-leave.side-menu-bg-leave-active {
     opacity: 0;
     transition: opacity 0.5s;
+}
+
+
+.search-enter{
+    top: -150vw;
+}
+
+.search-enter.search-enter-active {
+    top: 0;
+    transition: top 0.5s;
+}
+
+.search-leave{
+    top: 0;
+}
+
+.search-leave.search-leave-active {
+    top: -150vw;
+    transition: top 0.5s;
 }
 
 
@@ -567,9 +587,20 @@ p {
 
 .search-input-icon{
     opacity: 0.7;
-    height: 22px;
-    width: 22px;
+    min-height: 22px;
+    min-width: 22px;
 
+    transition: 0.2s;
+}
+
+.search-icon-open{
+    background: url("../img/search.svg") no-repeat center center;
+    background-size: contain;
+}
+
+.search-icon-close{
+    background: url("../img/x.svg") no-repeat center center;
+    background-size: contain;
 }
 
 .search-bar > input:before {
@@ -1419,6 +1450,7 @@ input:-webkit-autofill:active {
         position: fixed;
         bottom: 0;
         left: 0;
+        z-index: 20;
     }
 
     .header-title {
@@ -1436,7 +1468,7 @@ input:-webkit-autofill:active {
         height: calc(100vh - 140px);
     }
 
-    .user-list-wrapper, .video-list {
+    .user-list-wrapper {
         display: none;
     }
 
@@ -1506,6 +1538,30 @@ input:-webkit-autofill:active {
     }
 
 
+    .video-list-wrapper{
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        z-index: 18;
+
+        pointer-events: none;
+
+
+    }
+
+    .video-list{
+        position: absolute;
+        height: calc(100vh - 120px);
+        pointer-events: auto;
+        border: none;
+        width: 100%;
+        background: #262626;
+    }
+
+    .search-input{
+        font-size: 14px;
+        padding-left: 10px;
+    }
 
 }
 

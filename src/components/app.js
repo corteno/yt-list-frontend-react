@@ -45,7 +45,8 @@ class App extends Component {
                 height: 0
             },
             isMobile: false,
-            isSideMenuOpen: false
+            isSideMenuOpen: false,
+            isSearchOpen: false
         };
 
     }
@@ -293,6 +294,15 @@ class App extends Component {
         this.setState({isSideMenuOpen: !this.state.isSideMenuOpen});
     };
 
+    onSearchClick = (value) => { //Value must be true or false
+        this.toggleSearch(value);
+    };
+
+
+    toggleSearch = (value) => { //Value must be true or false
+        this.setState({isSearchOpen: value});
+    };
+
     updateWindowDimensions = () => {
         this.setState({
             windowSize: {
@@ -379,7 +389,7 @@ class App extends Component {
             this.videoSearch(term);
         }, 200);
 
-
+        let searchList;
         let sideMenu;
         if (this.state.isMobile /*&& this.state.isSideMenuOpen*/) {
             sideMenu = (
@@ -391,7 +401,26 @@ class App extends Component {
                 />
 
             );
+
+            searchList = (
+                <VideoList
+                    onVideoSelect={this.onVideoSelect}
+                    videos={this.state.videos}
+                    isVisible={this.state.isSearchOpen}
+                    isMobile={this.state.isMobile}
+                />
+            );
+
+        } else {
+            searchList = (
+                <VideoList
+                    onVideoSelect={this.onVideoSelect}
+                    videos={this.state.videos}
+                />
+            );
         }
+
+
 
 
         return (
@@ -406,6 +435,8 @@ class App extends Component {
                     <SearchBar
                         onSearchTermChange={videoSearch}
                         isMobile={this.state.isMobile}
+                        onSearchClick={this.onSearchClick}
+                        isSearchOpen={this.state.isSearchOpen}
                     />
                 </Header>
 
@@ -432,10 +463,8 @@ class App extends Component {
                         />
                     </div>
 
-                    <VideoList
-                        onVideoSelect={this.onVideoSelect}
-                        videos={this.state.videos}
-                    />
+                    {/*VideoList*/}
+                    {searchList}
 
 
                 </div>

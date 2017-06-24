@@ -1,8 +1,11 @@
 import React from 'react';
 import VideoListItem from './video_list_item';
+import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup';
+
 
 const VideoList = (props) => {
     let videoItems;
+    let videoList;
     if (props.videos.length > 0) {
         videoItems = props.videos.map((video) => {
             return (
@@ -23,11 +26,36 @@ const VideoList = (props) => {
         );
     }
 
+    if(props.isMobile && props.isVisible){
+        videoList = (
+            <ul className="video-list">
+                {videoItems}
+            </ul>
+        );
+    } else if(!props.isMobile){
+        videoList = (
+            <ul className="video-list">
+                {videoItems}
+            </ul>
+        );
+    }
+
+
 
     return (
-        <ul className="video-list">
-            {videoItems}
-        </ul>
+        <ReactCSSTransitionGroup
+            transitionName="search"
+            transitionEnter={true}
+            transitionEnterTimeout={500}
+            transitionLeave={true}
+            transitionLeaveTimeout={500}
+            component="div"
+            className="video-list-wrapper"
+        >
+            {videoList}
+        </ReactCSSTransitionGroup>
+
+
     );
 };
 

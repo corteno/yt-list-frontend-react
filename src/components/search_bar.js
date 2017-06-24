@@ -14,16 +14,32 @@ class SearchBar extends Component {
         this.props.onSearchTermChange(term);
     };
 
+    /*onBlur() {
+        this.setState({term: ''});
+    };*/
+
     render() {
+        let searchIconClass;
+        if(!this.props.isSearchOpen){
+            searchIconClass = 'search-input-icon search-icon-open';
+        } else {
+            searchIconClass = 'search-input-icon search-icon-close';
+        }
 
         if(this.props.isMobile){
             return (
                 <div className="search-bar-mobile">
-                    <img src="../img/search.svg" alt="" className="search-input-icon"/>
+                    <div
+                        className={searchIconClass}
+                        onClick={() => {this.props.onSearchClick(false)}}
+                    />
+
                     <input
                         className="search-input"
                         value={this.state.term}
                         onChange={event => this.onInputChange(event.target.value)}
+                        onFocus={() => {this.props.onSearchClick(true)}}
+                        /*onBlur={() => {this.onBlur()}}*/
                         placeholder="Search"
                     />
                 </div>

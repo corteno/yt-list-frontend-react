@@ -2,21 +2,6 @@ import React, {Component} from 'react';
 import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup';
 
 const SideMenu = (props) => {
-        /*constructor(props) {
-         super();
-
-         this.state = {
-         visible: true
-         };
-         };
-
-         componentWillUnmount() {
-         console.log('comp will unmount');
-         };
-
-         componentWillReceiveProps(newProps){
-         console.log(newProps.mounted);
-         }*/
 
         let sideMenu;
         let sideMenuBg;
@@ -42,6 +27,7 @@ const SideMenu = (props) => {
                     </ul>
                 </div>
             );
+
 
             sideMenuBg = (
                 <div className="side-menu-bg" onClick={() => {
