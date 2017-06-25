@@ -26,20 +26,30 @@ const VideoList = (props) => {
         );
     }
 
-    if(props.isMobile && props.isVisible){
+    if (props.isMobile && props.isVisible) {
         videoList = (
-            <ul className="video-list">
-                {videoItems}
-            </ul>
+            <ReactCSSTransitionGroup
+                transitionName="search"
+                transitionEnter={true}
+                transitionEnterTimeout={500}
+                transitionLeave={true}
+                transitionLeaveTimeout={500}
+                component="div"
+                className="video-list-wrapper"
+            >
+                <ul className="video-list">
+                    {videoItems}
+                </ul>
+            </ReactCSSTransitionGroup>
         );
-    } else if(!props.isMobile){
-        videoList = (
+    }
+    else if (!props.isMobile) {
+        return (
             <ul className="video-list">
                 {videoItems}
             </ul>
         );
     }
-
 
 
     return (

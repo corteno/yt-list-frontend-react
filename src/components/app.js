@@ -319,12 +319,18 @@ class App extends Component {
         });
     };
 
+    changeTitle(title) {
+        document.title = `${title} - Youtube Playlist`;
+    };
+
     //Getting playlist items on startup
     componentWillMount() {
         this.getPlayListItems();
         this.getRoomDetails();
         this.setUserDetails();
 
+        this.updateWindowDimensions();
+        window.addEventListener('resize', this.updateWindowDimensions);
     };
 
     componentWillUnmount() {
@@ -335,6 +341,7 @@ class App extends Component {
         //Socket.io stuff
         const checkVariable = () => {
             if (this.state.roomDetails !== undefined) {
+                this.changeTitle(this.state.roomDetails.name);
                 /*console.log(this.state.roomDetails.id);*/
                 //console.log("Room details", this.state.roomDetails);
 
@@ -379,8 +386,7 @@ class App extends Component {
         };
         setTimeout(checkVariable, 500);
 
-        this.updateWindowDimensions();
-        window.addEventListener('resize', this.updateWindowDimensions);
+
     };
 
 
@@ -416,6 +422,7 @@ class App extends Component {
                 <VideoList
                     onVideoSelect={this.onVideoSelect}
                     videos={this.state.videos}
+                    isMobile={this.state.isMobile}
                 />
             );
         }

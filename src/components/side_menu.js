@@ -21,7 +21,7 @@ const SideMenu = (props) => {
                         <li className="side-menu-item" onClick={() => {
                             console.log('bring up users');
                         }}>
-                            <img src="../img/users.svg" alt="" className="side-menu-item-icon"/>
+                            <img src="../img/users.svg" alt="" className="side-menu-item-icon users-icon"/>
                             <p>Users</p>
                         </li>
                     </ul>
