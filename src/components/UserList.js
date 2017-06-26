@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
 import UserListItem from './UserListItem';
 import shortid from 'shortid';
-import AuthService from '../utils/AuthService'
+import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup';
+
 
 const UserList = (props) => {
     let userListItems;
     userListItems = props.userList.map((user) => {
         //Other users can see who the speaker is
-        if(props.speakers.includes(user) && props.clientUsername === user){
+        if (props.speakers.includes(user) && props.clientUsername === user) {
             //console.log('Speaker', user);
             return (
                 <UserListItem
@@ -18,7 +19,7 @@ const UserList = (props) => {
                     speakerClickable={true}
                 />
             );
-        } else if(props.clientUsername === user){
+        } else if (props.clientUsername === user) {
             //console.log('Not speaker but user', user);
             //You can see your own status as a speaker
             return (
@@ -29,7 +30,7 @@ const UserList = (props) => {
                     onSpeakerClick={props.onSpeakerClick}
                 />
             );
-        } else if(props.speakers.includes(user)){
+        } else if (props.speakers.includes(user)) {
             return (
                 <UserListItem
                     key={shortid.generate()}
@@ -52,14 +53,39 @@ const UserList = (props) => {
         }
 
 
-
     });
+
+    let userList;
+    if (props.isMobile && props.isUserListOpen) {
+        console.log('runs');
+        userList = (
+                <ReactCSSTransitionGroup
+                    transitionName="userlist"
+                    transitionEnter={true}
+                    transitionEnterTimeout={500}
+                    transitionLeave={true}
+                    transitionLeaveTimeout={500}
+                    component='ul'
+                    className='user-list-wrapper'
+                >
+                    {userListItems}
+                </ReactCSSTransitionGroup>
+
+        );
+    } else if (!props.isMobile) {
+        userList = (
+            <ul className="user-list-wrapper">
+                {userListItems}
+            </ul>
+
+        );
+    }
 
 
     return (
-        <ul className="user-list-wrapper">
-            {userListItems}
-        </ul>
+        <div className="user-list-container">
+            {userList}
+        </div>
     );
 
 

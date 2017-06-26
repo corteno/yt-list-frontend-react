@@ -19,7 +19,8 @@ const SideMenu = (props) => {
                             <p>Rooms</p>
                         </li>
                         <li className="side-menu-item" onClick={() => {
-                            console.log('bring up users');
+                            props.toggleUserList();
+                            props.toggleSideMenu();
                         }}>
                             <img src="../img/users.svg" alt="" className="side-menu-item-icon users-icon"/>
                             <p>Users</p>
@@ -45,8 +46,6 @@ const SideMenu = (props) => {
 
                 <ReactCSSTransitionGroup
                     transitionName="side-menu"
-                    /*transitionAppear={true}
-                     transitionAppearTimeout={500}*/
                     transitionEnter={true}
                     transitionEnterTimeout={500}
                     transitionLeave={true}

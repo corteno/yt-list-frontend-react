@@ -46,7 +46,8 @@ class App extends Component {
             },
             isMobile: false,
             isSideMenuOpen: false,
-            isSearchOpen: false
+            isSearchOpen: false,
+            isUserListOpen: false
         };
 
     }
@@ -303,6 +304,10 @@ class App extends Component {
         this.setState({isSearchOpen: value});
     };
 
+    toggleUserList = () => { //Value must be true or false
+        this.setState({isUserListOpen: !this.state.isUserListOpen});
+    };
+
     updateWindowDimensions = () => {
         this.setState({
             windowSize: {
@@ -328,6 +333,7 @@ class App extends Component {
         this.getPlayListItems();
         this.getRoomDetails();
         this.setUserDetails();
+
 
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions);
@@ -404,6 +410,7 @@ class App extends Component {
                     onNavBackClick={this.onNavBackClick}
                     isSideMenuOpen={this.state.isSideMenuOpen}
                     toggleSideMenu={this.toggleSideMenu}
+                    toggleUserList={this.toggleUserList}
                 />
 
             );
@@ -454,6 +461,9 @@ class App extends Component {
                         speakers={this.state.roomDetails.speakers}
                         onSpeakerClick={this.onSpeakerClick}
                         clientUsername={this.state.userDetails.username}
+                        isUserListOpen={this.state.isUserListOpen}
+                        isMobile={this.state.isMobile}
+                        toggleUserList={this.toggleUserList}
                     />
                     <div className="playlist-container">
                         <YoutubePlayer
